@@ -1,3 +1,4 @@
 mkdocs
 mkdocstrings[python]
 markdown-include
+jinja2<3.1.0

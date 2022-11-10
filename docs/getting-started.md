@@ -11,7 +11,7 @@ Github.
 
 ### Homebrew
 
-Homebrew offers the simplest install for Mac and Linux:
+[Homebrew](https://brew.sh/) offers the simplest install for Mac and Linux:
 
 ```bash
 brew tap qleet/tap
@@ -26,6 +26,8 @@ handled for you.  Otherwise, ensure these tools are installed first:
 
 * [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+* [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)
+* [wget](https://www.gnu.org/software/wget/)
 
 Then install qleetctl:
 
@@ -98,3 +100,10 @@ the sample app running:
 kubectl get po -n sample-app
 ```
 
+## Uninstall QleetOS
+
+To uninstall the QleetOS control plane locally:
+
+```bash
+qleetctl uninstall
+```

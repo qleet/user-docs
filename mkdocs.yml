@@ -3,4 +3,4 @@ site_name: QleetOS User Documentation
 theme:
   name: material
   favicon: img/favicon.png
-  logo: img/logo.svg
+  logo: img/logo.png

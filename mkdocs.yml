@@ -1,4 +1,4 @@
 site_name: QleetOS User Documentation
 site_url: https://docs.qleet.io
 theme:
-  name: readthedocs
+  name: material

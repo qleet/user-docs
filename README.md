@@ -6,7 +6,8 @@ User docs for QleetOS.
 
 Prerequisistes:
 
-* [mkdocs](https://www.mkdocs.org/)
+* [mkdocs](https://www.mkdocs.org/getting-started/#installation)
+* [mkdocs-material theme](https://squidfunk.github.io/mkdocs-material/getting-started/#installation)
 
 Run the server locally:
 

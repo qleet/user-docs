@@ -2,7 +2,7 @@ name: ci
 on:
   push:
     branches:
-      - master 
+      - 4-autodeploy 
       - main
 jobs:
   deploy:

@@ -1,5 +1,4 @@
 site_name: QleetOS User Documentation
 # site_url: https://qleet.github.io/user-docs/
-# site_url: https://docs.qleet.io
 theme:
   name: material

@@ -2,5 +2,5 @@ site_name: QleetOS User Documentation
 # site_url: https://qleet.github.io/user-docs/
 theme:
   name: material
-  favicon: img/favicon.png
+  favicon: img/favicon.ico
   logo: img/logo.png

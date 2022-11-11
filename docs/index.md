@@ -6,6 +6,7 @@ deployments.
 If you're managing containerized software with any of the following
 requirements, QleetOS can help reduce operational toil, improve devloper
 velocity and reduce production costs:
+
 * tangled dependencies
 * autoscaling
 * multi-region

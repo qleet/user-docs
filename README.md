@@ -6,6 +6,7 @@ User docs for QleetOS.
 
 Prerequisistes:
 
+* [python 3](https://docs.python-guide.org/starting/installation/)
 * [mkdocs](https://www.mkdocs.org/getting-started/#installation)
 * [mkdocs-material theme](https://squidfunk.github.io/mkdocs-material/getting-started/#installation)
 

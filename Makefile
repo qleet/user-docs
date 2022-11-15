@@ -22,7 +22,7 @@ stop:
 	@ps aux | grep 'python.*mkdocs[[:space:]]serve' | awk {'print $$2'} | xargs kill -9
 
 #release: @ Create and push a new tag
-release: build
+release:
 	$(eval NT=$(NEWTAG))
 	@echo -n "Are you sure to create and push ${NT} tag? [y/N] " && read ans && [ $${ans:-N} = y ]
 	@git tag -a -m "Cut ${NT} release" ${NT}

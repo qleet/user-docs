@@ -2,7 +2,6 @@ name: ci
 on:
   push:
     branches:
-      - 7-web3
       - main
 jobs:
   deploy:

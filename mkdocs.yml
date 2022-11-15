@@ -1,4 +1,44 @@
 site_name: QleetOS User Documentation
-# site_url: https://qleet.github.io/user-docs/
+site_author: Qleet.io
+repo_url: https://github.com/qleet/user-docs
+repo_name: qleet/user-docs
+edit_uri: blob/main/docs/
+
 theme:
   name: material
+  favicon: img/favicon.ico
+  logo: img/logo.png
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+    - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/qleet
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - toc:
+      permalink: true
+
+copyright: Copyright &copy; 2022 Qleet.io

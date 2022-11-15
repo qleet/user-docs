@@ -1,0 +1,64 @@
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sample-app
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web3-sample-app-config
+  namespace: sample-app
+data:
+  rpc.endpoint: https://compatible-greatest-energy.discover.quiknode.pro/47ac872f53b4c944c4000778f004280c9172eda8/
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web3-sample-app
+  namespace: sample-app
+spec:
+  selector:
+    matchLabels:
+      app: web3-sample
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: web3-sample
+    spec:
+      containers:
+        - name: web3-sample-app
+          image: ghcr.io/qleet/web3-sample-app:v0.0.8
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: '8080'
+            - name: VITE_RPC_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: web3-sample-app-config
+                  key: rpc.endpoint
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: '1m'
+              memory: '6Mi'
+            limits:
+              cpu: '3m'
+              memory: '8Mi'
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web3-sample-app
+  namespace: sample-app
+spec:
+  selector:
+    app: web3-sample-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

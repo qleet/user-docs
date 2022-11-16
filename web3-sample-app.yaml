@@ -10,7 +10,7 @@ metadata:
   name: web3-sample-app-config
   namespace: sample-app
 data:
-  rpc.endpoint: https://compatible-greatest-energy.discover.quiknode.pro/47ac872f53b4c944c4000778f004280c9172eda8/
+  RPCENDPOINT: https://rpc.ankr.com/eth/
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,16 +29,16 @@ spec:
     spec:
       containers:
         - name: web3-sample-app
-          image: ghcr.io/qleet/web3-sample-app:v0.0.8
+          image: ghcr.io/qleet/web3-sample-app:v0.0.9
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
               value: '8080'
-            - name: VITE_RPC_ENDPOINT
+            - name: RPCENDPOINT
               valueFrom:
                 configMapKeyRef:
                   name: web3-sample-app-config
-                  key: rpc.endpoint
+                  key: RPCENDPOINT
           ports:
             - containerPort: 8080
           resources:

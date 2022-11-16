@@ -28,6 +28,7 @@ handled for you.  Otherwise, ensure these tools are installed first:
 * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 * [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)
 * [wget](https://www.gnu.org/software/wget/)
+* [jq](https://github.com/stedolan/jq/wiki/Installation)
 
 Then install qleetctl:
 
@@ -78,9 +79,9 @@ First we need to create a workload definition for the sample app:
 ```bash
 curl \
     http://localhost:1323/v0/workload_definitions \
-    --data '{"Name":"web3-sample-app","YAMLDocument":"apiVersion: v1\nkind: Namespace\nmetadata:\n  name: sample-app\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: web3-sample-app-config\n  namespace: sample-app\ndata:\n  rpc.endpoint: https://compatible-greatest-energy.discover.quiknode.pro/47ac872f53b4c944c4000778f004280c9172eda8/\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    matchLabels:\n      app: web3-sample\n  replicas: 2\n  template:\n    metadata:\n      labels:\n        app: web3-sample\n    spec:\n      containers:\n        - name: web3-sample-app\n          image: ghcr.io/qleet/web3-sample-app:v0.0.8\n          imagePullPolicy: IfNotPresent\n          env:\n            - name: PORT\n              value: '"'8080'"'\n            - name: VITE_RPC_ENDPOINT\n              valueFrom:\n                configMapKeyRef:\n                  name: web3-sample-app-config\n                  key: rpc.endpoint\n          ports:\n            - containerPort: 8080\n          resources:\n            requests:\n              cpu: '1m'\n              memory: '6Mi'\n            limits:\n              cpu: '3m'\n              memory: '8Mi'\n      restartPolicy: Always\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    app: web3-sample\n  ports:\n    - protocol: TCP\n      port: 8080\n      targetPort: 8080\n\n","UserID":1}' \
+    --data '{"Name":"web3-sample-app","YAMLDocument":"apiVersion: v1\nkind: Namespace\nmetadata:\n  name: sample-app\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: web3-sample-app-config\n  namespace: sample-app\ndata:\n  RPCENDPOINT: https://rpc.ankr.com/eth/\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    matchLabels:\n      app: web3-sample\n  replicas: 2\n  template:\n    metadata:\n      labels:\n        app: web3-sample\n    spec:\n      containers:\n        - name: web3-sample-app\n          image: ghcr.io/qleet/web3-sample-app:v0.0.9\n          imagePullPolicy: IfNotPresent\n          env:\n            - name: PORT\n              value: '"'8080'"'\n            - name: RPCENDPOINT\n              valueFrom:\n                configMapKeyRef:\n                  name: web3-sample-app-config\n                  key: RPCENDPOINT\n          ports:\n            - containerPort: 8080\n          resources:\n            requests:\n              cpu: '1m'\n              memory: '6Mi'\n            limits:\n              cpu: '3m'\n              memory: '8Mi'\n      restartPolicy: Always\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    app: web3-sample\n  ports:\n    - protocol: TCP\n      port: 8080\n      targetPort: 8080\n\n","UserID":1}' \
     --header "Content-Type: application/json" \
-    --request POST
+    --request POST --silent | jq .
 ```
 
 Next we need to create an instance of the sample app using that definition:
@@ -90,7 +91,7 @@ curl \
     http://localhost:1323/v0/workload_instances \
     --data '{"Name":"web3-sample-app","WorkloadClusterID":1,"WorkloadDefinitionID":1}' \
     --header "Content-Type: application/json" \
-    --request POST
+    --request POST --silent | jq .
 ```
 
 Now, you can query the Kubernetes API for the local cluster to see the pods for
@@ -106,6 +107,12 @@ kubectl port-forward -n sample-app svc/web3-sample-app 8080:8080
 ```
 
  and open it in a browser - [http://localhost:8080/](http://localhost:8080/)
+ 
+ Valid eth address to test:
+
+```
+0xeB2629a2734e272Bcc07BDA959863f316F4bD4Cf
+```
  
 ![web3-sample-app](img/web3-sample-app.jpg)
 

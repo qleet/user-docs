@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: web3-sample-app
-          image: ghcr.io/qleet/web3-sample-app:v0.0.9
+          image: ghcr.io/qleet/web3-sample-app:v0.0.10
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT

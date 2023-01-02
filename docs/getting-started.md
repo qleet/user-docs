@@ -11,7 +11,8 @@ Github.
 
 ### Homebrew
 
-[Homebrew](https://brew.sh/) offers the simplest install for Mac and Linux:
+[Homebrew](https://brew.sh/) offers the simplest install for Mac and Linux and
+is the recommended install method:
 
 ```bash
 brew tap qleet/tap
@@ -49,7 +50,7 @@ qleetctl help
 To install the QleetOS control plane locally:
 
 ```bash
-qleetctl install
+qleetctl create qleetos --name test
 ```
 
 This will create a local kind Kubernetes cluster and install all of the control
@@ -69,59 +70,192 @@ The QleetOS API is now available at localhost:1323.  Ensure that it is up and
 running by opening the Swagger API docs at:
 [http://localhost:1323/swagger/index.html](http://localhost:1323/swagger/index.html).
 
+You can see the control plane components running locally as follows:
+
+```bash
+kubectl get po -n threeport-control-plane
+```
+
 ## Deploy A Workload
 
-To get a feel for how the QleetOS works, let's deploy a sample workload using
-curl to make calls to the QleetOS API.
+To deploy a workload using QleetOS, you minimally need to create two API objects:
+a `WorkloadDefinition` and a `WorkloadInstance`.  For this example, we're also
+going to create a `WorkloadServiceDependency` to manage connections to the
+blockchain.  More on this shortly.  We can create all three resources with a
+single configuration file.
 
-First we need to create a workload definition for the sample app:
-
-```bash
-curl \
-    http://localhost:1323/v0/workload_definitions \
-    --data '{"Name":"web3-sample-app","YAMLDocument":"apiVersion: v1\nkind: Namespace\nmetadata:\n  name: sample-app\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: web3-sample-app-config\n  namespace: sample-app\ndata:\n  RPCENDPOINT: https://rpc.ankr.com/eth/\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    matchLabels:\n      app: web3-sample\n  replicas: 2\n  template:\n    metadata:\n      labels:\n        app: web3-sample\n    spec:\n      containers:\n        - name: web3-sample-app\n          image: ghcr.io/qleet/web3-sample-app:v0.0.10\n          imagePullPolicy: IfNotPresent\n          env:\n            - name: PORT\n              value: '"'8080'"'\n            - name: RPCENDPOINT\n              valueFrom:\n                configMapKeyRef:\n                  name: web3-sample-app-config\n                  key: RPCENDPOINT\n          ports:\n            - containerPort: 8080\n          resources:\n            requests:\n              cpu: '1m'\n              memory: '6Mi'\n            limits:\n              cpu: '3m'\n              memory: '8Mi'\n      restartPolicy: Always\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: web3-sample-app\n  namespace: sample-app\nspec:\n  selector:\n    app: web3-sample\n  ports:\n    - protocol: TCP\n      port: 8080\n      targetPort: 8080\n\n","UserID":1}' \
-    --header "Content-Type: application/json" \
-    --request POST --silent | jq .
-```
-
-Next we need to create an instance of the sample app using that definition:
+First, create a workspace on your local filesystem:
 
 ```bash
-curl \
-    http://localhost:1323/v0/workload_instances \
-    --data '{"Name":"web3-sample-app","WorkloadClusterID":1,"WorkloadDefinitionID":1}' \
-    --header "Content-Type: application/json" \
-    --request POST --silent | jq .
+mkdir qleetos-test
+cd qleetos-test
 ```
 
-Now, you can query the Kubernetes API for the local cluster to see the pods for
-the sample app running:
+Download a sample workload config as follows:
 
 ```bash
-kubectl get po -n sample-app
+curl -O https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-workload.yaml
 ```
 
-You can map the port of the sample app
+You now have the workload config on your local filesystem.  If you open the file
+you'll see it has a configuration for the three resources.  Let's dig into what
+each of them represent:
+
+### Workload Definition
+
+The `WorkloadDefinition` is what it sounds like: a definition for a workload
+that can be deployed as many times as you like.  It includes a field
+`YAMLDocument` that refers to a file on your filesystem.  Let's download that
+file:
+
 ```bash
-kubectl port-forward -n sample-app svc/web3-sample-app 8080:8080
+mkdir sample
+curl -o sample/go-web3-sample-app-manifest.yaml https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-sample-app-manifest.yaml
 ```
 
- and open it in a browser - [http://localhost:8080/](http://localhost:8080/)
- 
- Valid eth address to test:
+That file contains Kubernetes manifest for four resources: a namespace,
+configmap, deployment and service.  Note that the configmap tells the sample app
+to use `http://forward-proxy.forward-proxy-system.svc.cluster.local` for its
+RPC endpoint.  This URL uses a local DNS entry that will be set up by QleetOS as
+defined by the Workload Service Dependency which we'll discuss more shortly.
 
+### Workload Instance
+The `WorkloadInstance` refers to the workload definition and actually deploys
+the instance of the workload.  It also refers to the cluster which is set up as
+the default when we created QleetOS above.
+
+### Workload Service Dependency
+
+The `Workload Service Dependency` creates a method to manage services that are
+accessed by your app over the network.  When you create a workload service
+dependency, QleetOS provisions a forward proxy.  This forward proxy consists of
+an Envoy proxy and a Kubernetes operator that configures Envoy to forward
+traffic to a given destination.  In this case, when the sample app calls the
+proxy, Envoy will forward the request to `rpc.ankr.com/eth` which is a publicly
+available RPC service provided by [ankr](https://www.ankr.com/).
+
+We can now create the workload as follows:
+
+```bash
+qleetctl create workload --config go-web3-workload.yaml
 ```
-0xeB2629a2734e272Bcc07BDA959863f316F4bD4Cf
+
+This command calls the the Qleet API to create those three Qleet objects.  The
+API notifies the workload controller via the message broker.  The workload
+controller processes the workload definition and creates the workload by calling
+the Kubernetes API.  Also, since a workload service dependency was created, the
+workload controller deploys the forward proxy components and configures the
+Envoy proxy.
+
+You can see the forward proxy components as follows:
+
+```bash
+kubectl get po -n forward-proxy-system
 ```
- 
-![web3-sample-app](img/web3-sample-app.jpg)
 
+You should see a pair of pods for the `forward-proxy-server` deployment.  These
+are the Envoy proxy.  Also, you should find a
+`forward-proxy-controller-manaager`.  This is the Kubernetes operator that
+serves as a control plane for Envoy and configures it.  It uses a ForwardProxy
+custom resource that was created by the workload controller.  You can see the
+content of that resource with the following:
 
-## Uninstall QleetOS
+```bash
+kubectl get forwardproxy -n forward-proxy-system -oyaml
+```
+
+Once the forward proxy is running and configured, the sample app can start and
+connect to its RPC endpoint.  You can see that workload with:
+
+```bash
+kubectl get po -n go-web3-sample-app
+```
+
+You can now see the sample by forwarding a local port to it with this command:
+
+```bash
+kubectl port-forward -n go-web3-sample-app svc/go-web3-sample-app 8888:8080
+```
+
+Now visit the app [here](http://localhost:8888).  It will display the balance of
+an Ethereum wallet by getting the information from the blockchain.
+
+## Update the Service Dependency
+
+Next, let's update the service dependency.  Download a new service dependency
+config:
+
+```bash
+curl -O https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-service-dependency-pokt.yaml
+```
+
+This config file contains a new publicly available RPC endpoint to gain access
+to the Ethereum blockchain.  This one uses the [POKT
+network](https://www.pokt.network/).
+
+Update the serviced dependency:
+
+```bash
+qleetctl update workload-service-dependency --config go-web3-service-dependency-pokt.yaml
+```
+
+This command changes the workload service dependency which prompts the workload
+controller to update the ForwardProxy config.  This triggers the forward proxy
+operator to update the Envoy config.  You can see the updated forward proxy as
+follows:
+
+```bash
+kubectl get forwardproxy -n forward-proxy-system -oyaml
+```
+
+If you try out the sample app again, you'll see it still can access the
+blockchain, but through a different provider.  This service dependency is
+managed independently of the sample app.  No restart, hot reload or config
+reload of any kind is required by the sample app.  It remains using the RPC
+endpoint configured in its configmap and the Envoy proxy forwards the request to
+the correct destination on its behalf.
+
+## Summary
+
+This diagram illustrates the relationships between components introduced in this
+guide.
+
+![QleetOS Getting Started](img/QleetOSGettingStarted.png)
+
+When we installed QleetOS using `qleetctl create qleetos` we created a new
+control plane on a local kind Kubernetes cluster.
+
+When we installed the sample app using `qleetctl create workload` we called the
+API to create the three workload objects: a definition, instance and service
+dependency.  The reconciliation for these objects was carried out by the
+workload controller which created the necessary Kubernetes resources via the
+Kubernetes control plane.  We spun up the sample app itself as well as the
+forward proxy components which manage connections to the Ethereum RPC providers
+needed by the sample app.
+
+When the end user queries the sample app for the balance of an Ethereum wallet,
+the sample app calls the forward proxy server which forwards the request to the
+destination configured by the QleetOS user.
+
+Importantly, all dependencies are created in response to, and only when needed
+by, a tenant workload - the sample app in this case.  In this way QleetOS is
+application-centric.  It responds to app requirements and creates
+dependent services in response to those requirements, as opposed to most
+workload management systems that require infrastructure and support services to
+be installed ahead of time.
+
+## Clean Up
 
 To uninstall the QleetOS control plane locally:
 
 ```bash
-qleetctl uninstall
+qleetctl delete qleetos -n test
+```
+
+Remove the test configs from you filesystem:
+
+```bash
+cd ../
+rm -rf qleetos-test
 ```
 

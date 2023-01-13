@@ -70,12 +70,6 @@ The QleetOS API is now available at localhost:1323.  Ensure that it is up and
 running by opening the Swagger API docs at:
 [http://localhost:1323/swagger/index.html](http://localhost:1323/swagger/index.html).
 
-You can see the control plane components running locally as follows:
-
-```bash
-kubectl get po -n threeport-control-plane
-```
-
 ## Deploy A Workload
 
 To deploy a workload using QleetOS, you minimally need to create two API objects:
@@ -117,7 +111,8 @@ That file contains Kubernetes manifest for four resources: a namespace,
 configmap, deployment and service.  Note that the configmap tells the sample app
 to use `http://forward-proxy.forward-proxy-system.svc.cluster.local` for its
 RPC endpoint.  This URL uses a local DNS entry that will be set up by QleetOS as
-defined by the Workload Service Dependency which we'll discuss more shortly.
+defined by the Workload Service Dependency which we'll discuss in more detail
+shortly.
 
 ### Workload Instance
 The `WorkloadInstance` refers to the workload definition and actually deploys

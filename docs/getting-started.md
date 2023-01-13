@@ -34,7 +34,7 @@ handled for you.  Otherwise, ensure these tools are installed first:
 Then install qleetctl:
 
 ```bash
-VERSION=$(curl -sL https://github.com/qleet/qleetctl/releases/ | xmllint -html -xpath '//a[contains(@href, "releases")]/text()' - 2> /dev/null | grep -P '^v' | head -n1)
+VERSION=$(curl --silent "https://api.github.com/repos/qleet/qleetctl/releases/latest" | jq '.tag_name' -r)
 wget https://github.com/qleet/qleetctl/releases/download/${VERSION}/qleetctl_${VERSION}_$(echo $(uname))_$(uname -m).tar.gz -O - |\
     tar -xz && sudo mv qleetctl /usr/local/bin/qleetctl
 ```

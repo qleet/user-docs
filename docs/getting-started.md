@@ -25,6 +25,7 @@ Currently, qleetctl requires that you have the following tools installed on your
 local machine.  If you use Homebrew to install, these dependencies will be
 handled for you.  Otherwise, ensure these tools are installed first:
 
+* [docker](https://docs.docker.com/engine/install/)
 * [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 * [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)

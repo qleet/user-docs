@@ -32,7 +32,7 @@ The horizontal scalability of Qleet Controllers is enabled by the [NATS messagin
 
 ### Infrastructure Management
 
-QleetOS uses [Crossplane](https://github.com/crossplane/crossplane) to manage cloud provider infrastructure.  We do *not* use their composite resources but instead prefer to write code in our controllers that manage their primitives to manage IaaS resources for the compute space systems.
+QleetOS currently supports AWS for infrastructure management.  We use the [v2 SDK for the Go programming language](https://github.com/aws/aws-sdk-go-v2) to manage AWS resources.  We do not use any intermediate toolchain or libraries such as Pulumi, Crossplane or Terraform.  These are capable tools for certain use cases.  However, using the AWS SDK directly gives us the most flexibility and ensures we don't encounter any unsupported operations we might need to perform in managing cloud resources for QleetOS users.
 
 ## Compute Space
 

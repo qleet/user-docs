@@ -1,63 +1,30 @@
 # QleetOS
 
-QleetOS is a distributed operating system for managing complex software
-deployments.
+QleetOS is a distributed operating system for managing modern containerized
+software deployments.
 
-If you're managing containerized software with any of the following
-requirements, QleetOS will help reduce operational toil, improve developer
-velocity and reduce production costs:
+Fundamentally, it exists to reduce engineering toil and increase resource
+consumption efficiency in delivering software to its users.  This leads to
+greater development velocity as well as lowered engineering and infrastructure
+costs.
 
-* layered dependencies
-* autoscaling
-* multi-region
-* multi-cloud
+![QleetOS Overview](img/QleetOSOverview.png)
 
-Developers and DevOps engineers interact with the control plane which deploys
-and manages workloads into the compute space.
+It is designed and built upon the following principles:
 
-![QleetOS Architecture](img/QleetOSArchitecture.png)
+* Workloads should not be platform aware.  Rather platforms should be workload
+  aware and provide application dependencies all the way down to the
+  infrastructure when, and only when, they are needed by the workload.
+* Sophisticated Kubernetes application platforms should be as easy to use as a
+  developer workstations.
+* Software supply chains should be API-driven and the persistence layer for
+  configuration should be stored in a database rather than a git repo.  Software
+  delivery is most reliably handled by level-triggered controllers rather than
+  disparate toolchains.
 
-## Control Plane
+If you'd like to try it out, visit our [getting started
+guide](guides/getting-started/).
 
-The QleetOS control plane exposes a RESTful API that clients use to make changes
-to the system.  QleetOS controllers are responsible for managing the state of
-the system in response to changes made by clients.  When changes are made to
-running software deployments, the controllers connect to the compute space and
-make the appropriate updates there.
-
-![QleetOS Control Plane](img/QleetOSControlPlaneArchitecture.png)
-
-This diagram illustrates Workload Controller operations at a high level.
-After a client makes a change to a workload, the API sends a notification to the
-message broker.  The message broker relays that message to the Workload
-Controller.  The Workload Controller does one or more of these three things as
-needed:
-
-1. Makes changes to the existing state of the system by connecting to the
-   compute space and managing Kubernetes resources there.
-2. Makes updates in the API to reflect those changes.
-3. Re-queues notifications with the message broker when subsequent
-   reconciliation is needed for some part of the system.
-
-## Compute Space
-
-The QleetOS compute space is populated by Kubernetes clusters.  This is where
-the software runs.  Those clusters can be run on whichever infrastructure
-providers that are supported by QleetOS in as many regions as needed to meet
-your apps' requirements.
-
-![QleetOS Compute Space](img/QleetOSComputeSpaceArchitecture.png)
-
-This example shows a Web3 application that has the following dependencies:
-
-* A cluster to run on
-* Ingress routing for end-user requests
-* TLS termination of incoming HTTPS requests
-* An RPC node to gain access to a blockchain
-
-QleetOS is responsible for managing these dependencies.  In other words, you can
-deploy an application with no infrastructure in place.  QleetOS will provision a
-cluster as needed, install the supporting services like ingress traffic routing
-and TLS asset management, install direct dependencies like the RPC node, and
-finally deploy the workload itself.
+If you'd like to learn about the architecture, check out our [architecture
+overview](architecture/overview/).
 

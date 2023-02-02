@@ -216,7 +216,7 @@ the correct destination on its behalf.
 This diagram illustrates the relationships between components introduced in this
 guide.
 
-![QleetOS Getting Started](img/QleetOSGettingStarted.png)
+![QleetOS Getting Started](../img/QleetOSGettingStarted.png)
 
 When we installed QleetOS using `qleetctl create qleetos` we created a new
 control plane on a local kind Kubernetes cluster.

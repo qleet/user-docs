@@ -6,8 +6,20 @@ sample app using QleetOS.
 
 ## Install qleetctl
 
-You can install qleetctl using Homebrew or by downloading the binary release from
-Github.
+In order to run QleetOS locally, you must first have [Docker
+Desktop](https://docs.docker.com/desktop/install/mac-install/) installed if on a
+Mac or [Docker Engine](https://docs.docker.com/engine/install/) on Linux.
+
+If you are on Ubuntu you can install and add your user to the docker group as
+follows:
+
+```bash
+sudo apt-get install gcc docker.io
+sudo usermod -aG docker $USER
+```
+
+Once docker is installed, you can install qleetctl using Homebrew (recommended)
+or by downloading the binary release from Github.
 
 ### Homebrew
 
@@ -25,7 +37,6 @@ Currently, qleetctl requires that you have the following tools installed on your
 local machine.  If you use Homebrew to install, these dependencies will be
 handled for you.  Otherwise, ensure these tools are installed first:
 
-* [docker](https://docs.docker.com/engine/install/)
 * [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 * [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)

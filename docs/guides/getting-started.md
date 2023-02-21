@@ -162,7 +162,7 @@ kubectl get po -n forward-proxy-system
 
 You should see a pair of pods for the `forward-proxy-server` deployment.  These
 are the Envoy proxy.  Also, you should find a
-`forward-proxy-controller-manaager`.  This is the Kubernetes operator that
+`forward-proxy-controller-manager`.  This is the Kubernetes operator that
 serves as a control plane for Envoy and configures it.  It uses a ForwardProxy
 custom resource that was created by the workload controller.  You can see the
 content of that resource with the following:

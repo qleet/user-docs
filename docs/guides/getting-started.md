@@ -100,7 +100,7 @@ cd qleetos-test
 Download a sample workload config as follows:
 
 ```bash
-curl -O https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-workload.yaml
+curl -O https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-workload.yaml
 ```
 
 You now have the workload config on your local filesystem.  If you open the file
@@ -116,7 +116,7 @@ file:
 
 ```bash
 mkdir sample
-curl -o sample/go-web3-sample-app-manifest.yaml https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-sample-app-manifest.yaml
+curl -o sample/go-web3-sample-app-manifest.yaml https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-sample-app-manifest.yaml
 ```
 
 That file contains Kubernetes manifest for four resources: a namespace,
@@ -193,7 +193,7 @@ Next, let's update the service dependency.  Download a new service dependency
 config:
 
 ```bash
-curl -O https://raw.githubusercontent.com/qleet/qleetctl/main/sample/go-web3-service-dependency-pokt.yaml
+curl -O https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-service-dependency-pokt.yaml
 ```
 
 This config file contains a new publicly available RPC endpoint to gain access

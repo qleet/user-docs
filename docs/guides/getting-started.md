@@ -75,9 +75,6 @@ To view the pods that constitute the QleetOS control plane:
 kubectl get po -n threeport-control-plane
 ```
 
-Note: Threeport is the name of the control plane.  You can think of Threeport as
-the kernel and QleetOS as a distribution of the operating system.
-
 The QleetOS API is now available at localhost:1323.  Ensure that it is up and
 running by opening the Swagger API docs at:
 [http://localhost:1323/swagger/index.html](http://localhost:1323/swagger/index.html).

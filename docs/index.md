@@ -1,10 +1,8 @@
 # QleetOS
 
-QleetOS is an application orchestration engine.
-
-It is a distributed operating system and control plane for managing modern
-containerized software systems.  It is an application-centric platform that
-manages the following concerns in response to app requirements:
+QleetOS is an application orchestration platform.  It is powered by
+distributed, application-centric control plane that manages the following in
+response to app requirements:
 
 * infrastructure
 * container orchestration
@@ -42,11 +40,11 @@ explosion of distributed software.
 
 ### Qleet
 
-QleetOS is an operating system for a global software system.  It provides
-abstractions for Kubernetes clusters and infrastructure providers.  It allows us
-to manage software systems in any region for any supported infra provider
-through a single control plane.  QleetOS is designed to enable the coming
-explosion of decentralized and globally distributed software systems.
+QleetOS is an application orchestration platform.  It provides abstractions for
+Kubernetes clusters and infrastructure providers.  It allows us to manage
+software systems in any region for any supported infra provider through a single
+control plane.  QleetOS is designed to enable the coming explosion of
+decentralized and globally distributed software systems.
 
 ![Decentralized Computing](img/DecentralizedComputingSolution.png)
 

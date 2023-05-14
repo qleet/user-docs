@@ -10,9 +10,9 @@ A software supply chain generally consists of the following:
   runtime environment.  This includes the configuration of the workloads for
   their destination environment.
 
-QleetOS plays no part in software development or continuous integration.  The
+Threeport plays no part in software development or continuous integration.  The
 delivery of the software into its runtime environment, however,  is a direct
-concern of QleetOS.
+concern of Threeport.
 
 ## GitOps Approach
 
@@ -57,9 +57,9 @@ resource configurations that have been defined in a config repo.  You then have
 to either tell your GitOps engine to ignore some changes or push those changes
 back into the code repo from your runtime environment.
 
-## QleetOS Approach
+## Threeport Approach
 
-QleetOS uses an API-driven - rather than code repo driven - approach.  This is
+Threeport uses an API-driven - rather than code repo driven - approach.  This is
 based on two principles:
 
 * A database is the best place to store values that need to be updated by humans
@@ -85,21 +85,21 @@ based on two principles:
    Github workflows.  This typically runs automated tests and build processes.
 2. The final build artifact is generally a container image that is pushed to a
    container registry to become available to run in an environment.
-3. The final step in the CI workflow is a call to the QleetOS API to register the
-   new workload artifact - the container image.
-4. Inside the QleetOS control plane, the Qleet Controller responsible for
+3. The final step in the CI workflow is a call to the Threeport API to register
+   the new workload artifact - the container image.
+4. Inside the Threeport control plane, the Threeport Controller responsible for
    software delivery is notified of the change and processes the preset config
    options, profiles and defaults for the new image.  It decides, based on the
    settings in the database, whether to deploy the new workload version to an
    environment or do nothing at all.  Commonly, the new version will be
    immediately deployed to a dev environment while a deployment to a production
-   environment would require an explicit action taken through the QleetOS CLI or
-   GUI by the developer or other team member.
-5. Any deployments, updates and deletes are then conducted by the Qleet
-   Controller in the Compute Space by calling the relevant Kubernetes API
+   environment would require an explicit action taken through the Threeport CLI
+   or GUI by the developer or other team member.
+5. Any deployments, updates and deletes are then conducted by the Threeport
+   controller in the Compute Space by calling the relevant Kubernetes API
    instances running the environments in question.
 
 Subsequently, the developer and other team members can then retrieve status
 updates and operational data - including any errors - for the new deployment
-through the QleetOS control plane.
+through the Threeport control plane.
 

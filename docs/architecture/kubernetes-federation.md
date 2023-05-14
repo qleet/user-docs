@@ -1,6 +1,6 @@
 # Kubernetes Federation
 
-This document describes the QleetOS approach to managing a fleet of Kubernetes
+This document describes the Threeport approach to managing a fleet of Kubernetes
 clusters.
 
 There have been many attempts at federating Kubernetes using Kubernetes itself,
@@ -37,23 +37,23 @@ is not the best choice.
 
 ![Federating Kubernetes with Kubernetes](../img/KubernetesFederationWithKubernetes.png)
 
-## QleetOS Controllers
+## Threeport Controllers
 
-QleetOS Controllers - or Qleets - inherit a lot of design principles from
-Kubernetes.  They are level-triggered reconcilers of state that operate on a
-non-terminating loop to ensure your desired state is realized in the system.
-One thing that Qleets add is horizontal scalability.  Any number of Qleets can
-operate simultaneously to manage the same set of object types.  They use NATS
-Jetstream to broker notifications to help achieve this.  In QleetOS, the message
-broker helps ensure a notification of a particular change is delivered to just
-one of a set of identical Qleets.  And the Qleets use the message broker to
-place distributed locks on specific objects while they are being reconciled so
-that race conditions between Qleets don't develop in making changes to the
-system.
+Threeport controllers inherit a lot of design principles from Kubernetes.  They
+are level-triggered reconcilers of state that operate on a non-terminating loop
+to ensure your desired state is realized in the system.  One thing that
+Threeport controllers add is horizontal scalability.  Any number of Threeport
+Controllers can operate simultaneously to manage the same set of object types.
+They use NATS Jetstream to broker notifications to help achieve this.  In
+Threeport, the message broker helps ensure a notification of a particular change
+is delivered to just one of a set of identical Threeport controllers.  Threeport
+controllers use the message broker to place distributed locks on specific objects while they are
+being reconciled so that race conditions between controllers don't develop in making
+changes to the system.
 
-## QleetOS Datastore
+## Threeport Datastore
 
-QleetOS uses CockroachDB, a purpose-built geo-redundant relational database.  The
+Threeport uses CockroachDB, a purpose-built geo-redundant relational database.  The
 geo-redundancy is essential for a purpose that is this critical.  And the
 transactional capabilities allow changes to multiple related objects to happen
 safely.  When you are dealing with remote clusters and the workloads therein,
@@ -61,5 +61,5 @@ changes that affect multiple objects are common.  Being able to apply a change
 to all the affected objects _or_ none at all if a problem occurs, is an
 important guarantee to have for stability.
 
-![Federating Kubernetes with QleetOS](../img/KubernetesFederationWithQleetOS.png)
+![Federating Kubernetes with Threeport](../img/KubernetesFederationWithThreeport.png)
 

@@ -1,6 +1,6 @@
-# QleetOS
+# Threeport
 
-QleetOS is an application orchestration platform.  It is powered by
+Threeport is an application orchestration platform.  It is powered by
 distributed, application-centric control plane that manages the following in
 response to app requirements:
 
@@ -9,15 +9,15 @@ response to app requirements:
 * installed supporting services
 * infra provider managed services
 
-With QleetOS you provide a definition for your application that includes a
-declaration of its dependencies, and QleetOS orchestrates all those dependencies
-and runs your app.
+With Threeport you provide a definition for your application that includes a
+declaration of its dependencies, and Threeport orchestrates all those
+dependencies and runs your app.
 
-![QleetOS Stack](img/QleetOSStack.png)
+![Threeport Stack](img/ThreeportStack.png)
 
-## What QleetOS Is
+## What Threeport Is
 
-QleetOS is a global abstraction layer.  To illustrate, let's examine the
+Threeport is a global abstraction layer.  To illustrate, let's examine the
 abstractions that sit below it.
 
 ### Linux
@@ -38,19 +38,19 @@ explosion of distributed software.
 
 ![Distributed Computing](img/DistributedComputingSolution.png)
 
-### Qleet
+### Threeport
 
-QleetOS is an application orchestration platform.  It provides abstractions for
-Kubernetes clusters and infrastructure providers.  It allows us to manage
+Threeport is an application orchestration platform.  It provides abstractions
+for Kubernetes clusters and infrastructure providers.  It allows us to manage
 software systems in any region for any supported infra provider through a single
-control plane.  QleetOS is designed to enable the coming explosion of
+control plane.  Threeport is designed to enable the coming explosion of
 decentralized and globally distributed software systems.
 
 ![Decentralized Computing](img/DecentralizedComputingSolution.png)
 
-## What QleetOS Is Not
+## What Threeport Is Not
 
-### QleetOS is not a Kubernetes Distribution
+### Threeport is not a Kubernetes Distribution
 
 Kubernetes distributions provide installation of Kubernetes clusters along with
 supporting services, or cluster addons.  They provide a way to install
@@ -63,31 +63,32 @@ generally as follows:
 3. Developers push changes to config repos that trigger delivery of workloads to
    the clusters.
 
-QleetOS performs cluster install and preparation in response to application
+Threeport performs cluster install and preparation in response to application
 deployments as needed.  The workflow is as follows:
 
-1. Operations installs the QleetOS control plane.
-2. Operations creates dependency profiles that are not satisfied by the
-   existing system defaults.  This could include profiles for clusters, managed
-   services or installed supporting services.
-3. Developers provide workload configs with dependency declarations to QleetOS.
-   QleetOS orchestrates the deployment of the application and its dependencies.
+1. Operations installs the Threeport control plane.
+2. Operations creates dependency profiles that are not satisfied by the existing
+   system defaults.  This could include profiles for clusters, managed services
+   or installed supporting services.
+3. Developers provide workload configs with dependency declarations to
+   Threeport.  Threeport orchestrates the deployment of the application and its
+   dependencies.
 
-### QleetOS is not a Continuous Integration System
+### Threeport is not a Continuous Integration System
 
 Traditional CI includes automated testing and build processes for software.  The
 existing tools and systems used by developers today for this are perfectly
-adequate.  QleetOS requires no change to these developer workflows.
+adequate.  Threeport requires no change to these developer workflows.
 
-In order to integrate QleetOS, simply add a call to the QleetOS control plane
-to notify it of a new build of a container image at the end of your CI process.
-QleetOS will perform the delivery of the new version into the appropriate
-environment/s.
+In order to integrate Threeport, simply add a call to the Threeport control
+plane to notify it of a new build of a container image at the end of your CI
+process.  Threeport will perform the delivery of the new version into the
+appropriate environment/s.
 
 
 ## Summary
 
-Fundamentally, QleetOS exists to reduce engineering toil and increase resource
+Fundamentally, Threeport exists to reduce engineering toil and increase resource
 consumption efficiency in delivering software to its users.  This leads to
 greater development velocity as well as lowered engineering and infrastructure
 costs.

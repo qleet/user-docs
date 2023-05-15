@@ -11,7 +11,7 @@ nav:
   - Architecture:
     - 'Overview': 'architecture/overview.md'
     - 'Tech Stack': 'architecture/tech-stack.md'
-    - 'Workload Controllers': 'architecture/workload-controllers.md'
+    - 'Threeport Controllers': 'architecture/threeport-controllers.md'
     - 'Kubernetes Federation': 'architecture/kubernetes-federation.md'
     - 'Software Delivery': 'architecture/software-delivery.md'
 

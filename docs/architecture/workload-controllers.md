@@ -9,31 +9,27 @@ the action and updates the status of the object in the API.
 
 ![Workload Controller](../img/WorkloadController.png)
 
-1. A developer requests a workload deployment and a service dependency for that
-   workload.  A WorkloadServiceDependency is Threeport mechanism for managing
-   back end services for workloads independently of the workload.  For an
-   example of how this works, see the [summary](guides/getting-started/#summary)
-   of our getting started guide.
-2. The API writes the new objects to the database.
-3. Once persisted the API notifies the message broker of the change, including
+1. A developer requests a workload and the API writes the new objects to the
+   database.
+2. Once persisted the API notifies the message broker of the change, including
    the database ID of the objects in question.
-4. The message broker delivers the notification to the correct Threeport
+3. The message broker delivers the notification to the correct Threeport
    controller.  If no Threeport controller is available immediately due to load
    or temporary outage, the NATS Jetstream broker holds the message until a
    Threeport controller instance becomes available.
-5. The Threeport controller puts a lock on the specific object by type and
+4. The Threeport controller puts a lock on the specific object by type and
    unique ID.  That way if another change is made to the same object before
    reconciliation is complete, the first change is completed and then the second
    change is executed so that race conditions don't develop.  In the event that
    a reconciliation cannot be completed, such as when a lock exists on a
    particular object, the notification is requeued through the broker so that it
    is performed at a later time.
-6. Reconciliation is completed.  In this case the workload will be deployed and
+5. Reconciliation is completed.  In this case the workload will be deployed and
    the configuration for the service dependency is applied through the
    Kubernetes API of the target cluster for the workload.
-7. Once the operation is successfully reconciled, the Workload controller
+6. Once the operation is successfully reconciled, the Workload controller
    updates the status of the object through the API.
-8. Finally, the Threeport controller releases the lock on the object instance so
+7. Finally, the Threeport controller releases the lock on the object instance so
    that it may undergo any future reconciliation.
 
 ## Reconcilers

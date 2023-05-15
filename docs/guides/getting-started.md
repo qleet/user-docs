@@ -18,18 +18,7 @@ sudo apt-get install gcc docker.io
 sudo usermod -aG docker $USER
 ```
 
-Once docker is installed, you can install tptctl using Homebrew (recommended) or
-by downloading the binary release from Github.
-
-### Homebrew
-
-[Homebrew](https://brew.sh/) offers the simplest install for Mac and Linux and
-is the recommended install method:
-
-```bash
-brew tap qleet/tap
-brew install qleet/tap/tptctl
-```
+Once docker is installed, you can install tptctl by downloading the binary release from Github.
 
 ### Binary Install
 

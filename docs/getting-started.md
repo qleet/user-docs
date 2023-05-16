@@ -80,7 +80,7 @@ cd threeport-test
 Download a sample workload config as follows:
 
 ```bash
-curl -O https://raw.githubusercontent.com/qleet/tptctl/v0.2.1/sample/go-web3-workload.yaml
+curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-workload.yaml
 ```
 
 You now have the workload config on your local filesystem.  If you open the file you'll
@@ -95,73 +95,51 @@ file:
 
 ```bash
 mkdir sample
-curl -o sample/go-web3-sample-app-manifest.yaml https://raw.githubusercontent.com/qleet/tptctl/v0.2.1/sample/go-web3-sample-app-manifest.yaml
+curl -o sample/wordpress.yaml https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress.yaml
 ```
 
-That file contains Kubernetes manifest for four resources: a namespace,
-configmap, deployment and service.  Note that the configmap tells the sample app
-to use `http://forward-proxy.forward-proxy-system.svc.cluster.local` for its RPC
-endpoint.  This URL uses a local DNS entry that will be set up by Threeport as
-defined by the Workload Service Dependency which we'll discuss in more detail
-shortly.
+That file contains the Kubernetes manifest for the resources required to deploy an
+instance of Wordpress.
 
 ### Workload Instance
 The `WorkloadInstance` refers to the workload definition and actually deploys
 the instance of the workload.  It also refers to the cluster which is set up as
 the default when we created Threeport above.
 
+
+### Create Workload
 We can now create the workload as follows:
 
 ```bash
-tptctl create workload --config go-web3-workload.yaml
+tptctl create workload --config wordpress-workload.yaml
 ```
 
 This command calls the the Threeport API to create those two Workload objects.
 The API notifies the workload controller via the message broker.  The workload
 controller processes the workload definition and creates the workload by calling
-the Kubernetes API.  Also, since a workload service dependency was created, the
-workload controller deploys the forward proxy components and configures the
-Envoy proxy.
+the Kubernetes API.
 
-You can see the forward proxy components as follows:
+Confirm the Wordpress application is running with:
 
 ```bash
-kubectl get po -n forward-proxy-system
-```
-
-You should see a pair of pods for the `forward-proxy-server` deployment.  These
-are the Envoy proxy.  Also, you should find a
-`forward-proxy-controller-manager`.  This is the Kubernetes operator that serves
-as a control plane for Envoy and configures it.  It uses a ForwardProxy custom
-resource that was created by the workload controller.  You can see the content
-of that resource with the following:
-
-```bash
-kubectl get forwardproxy -n forward-proxy-system -oyaml
-```
-
-Once the forward proxy is running and configured, the sample app can start and
-connect to its RPC endpoint.  You can see that workload with:
-
-```bash
-kubectl get po -n go-web3-sample-app
+kubectl get pods
 ```
 
 You can now see the sample by forwarding a local port to it with this command:
 
 ```bash
-kubectl port-forward -n go-web3-sample-app svc/go-web3-sample-app 8888:8080
+kubectl port-forward svc/getting-started-wordpress 8080:80
 ```
 
-Now visit the app [here](http://localhost:8888).  It will display the balance of
-an Ethereum wallet by getting the information from the blockchain.
+Now visit the app [here](http://localhost:8888).  It will display the welcome screen of
+the Wordpress application.
 
 ## Summary
 
 This diagram illustrates the relationships between components introduced in this
 guide.
 
-![Threeport Getting Started](img/ThreeportGettingStarted.png)
+![Threeport Getting Started](img/ThreeportGettingStartedWordpress.png)
 
 When we installed Threeport using `tptctl create threeport` we created a new
 control plane on a local kind Kubernetes cluster.

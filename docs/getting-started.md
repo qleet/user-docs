@@ -156,41 +156,6 @@ kubectl port-forward -n go-web3-sample-app svc/go-web3-sample-app 8888:8080
 Now visit the app [here](http://localhost:8888).  It will display the balance of
 an Ethereum wallet by getting the information from the blockchain.
 
-## Update the Service Dependency
-
-Next, let's update the service dependency.  Download a new service dependency
-config:
-
-```bash
-curl -O https://raw.githubusercontent.com/qleet/tptctl/v0.2.1/sample/go-web3-service-dependency-pokt.yaml
-```
-
-This config file contains a new publicly available RPC endpoint to gain access
-to the Ethereum blockchain.  This one uses the [POKT
-network](https://www.pokt.network/).
-
-Update the serviced dependency:
-
-```bash
-tptctl update workload-service-dependency --config go-web3-service-dependency-pokt.yaml
-```
-
-This command changes the workload service dependency which prompts the workload
-controller to update the ForwardProxy config.  This triggers the forward proxy
-operator to update the Envoy config.  You can see the updated forward proxy as
-follows:
-
-```bash
-kubectl get forwardproxy -n forward-proxy-system -oyaml
-```
-
-If you try out the sample app again, you'll see it still can access the
-blockchain, but through a different provider.  This service dependency is
-managed independently of the sample app.  No restart, hot reload or config
-reload of any kind is required by the sample app.  It remains using the RPC
-endpoint configured in its configmap and the Envoy proxy forwards the request to
-the correct destination on its behalf.
-
 ## Summary
 
 This diagram illustrates the relationships between components introduced in this
@@ -204,20 +169,7 @@ control plane on a local kind Kubernetes cluster.
 When we installed the sample app using `tptctl create workload` we called the API to
 create the two workload objects: a definition and an instance.  The reconciliation for
 these objects was carried out by the workload controller which created the necessary
-Kubernetes resources via the Kubernetes control plane.  We spun up the sample app itself
-as well as the forward proxy components which manage connections to the Ethereum RPC
-providers needed by the sample app.
-
-When the end user queries the sample app for the balance of an Ethereum wallet,
-the sample app calls the forward proxy server which forwards the request to the
-destination configured by the Threeport user.
-
-Importantly, all dependencies are created in response to, and only when needed
-by, a tenant workload - the sample app in this case.  In this way Threeport is
-application-centric.  It responds to app requirements and creates dependent
-services in response to those requirements, as opposed to most workload
-management systems that require infrastructure and support services to be
-installed ahead of time.
+Kubernetes resources via the Kubernetes control plane.
 
 ## Clean Up
 

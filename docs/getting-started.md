@@ -213,7 +213,7 @@ the correct destination on its behalf.
 This diagram illustrates the relationships between components introduced in this
 guide.
 
-![Threeport Getting Started](../img/ThreeportGettingStarted.png)
+![Threeport Getting Started](img/ThreeportGettingStarted.png)
 
 When we installed Threeport using `tptctl create threeport` we created a new
 control plane on a local kind Kubernetes cluster.

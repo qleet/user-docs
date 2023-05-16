@@ -1,0 +1,8 @@
+Name: "go-web3-sample-app"
+WorkloadDefinition:
+  Name: "go-web3-sample-app-definition"
+  YAMLDocument: "go-web3-sample-app-manifest.yaml"
+  WorkloadInstances:
+    Name: "go-web3-sample-app-instance"
+    WorkloadClusterName: "default-qleet-compute-space"
+    WorkloadDefinitionName: "go-web3-sample-app-definition"

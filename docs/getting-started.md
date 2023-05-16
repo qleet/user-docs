@@ -66,11 +66,9 @@ kubectl get po -n threeport-control-plane
 
 ## Deploy A Workload
 
-To deploy a workload using Threeport, you minimally need to create two API
-objects: a `WorkloadDefinition` and a `WorkloadInstance`.  For this example,
-we're also going to create a `WorkloadServiceDependency` to manage connections
-to the blockchain.  More on this shortly.  We can create all three resources
-with a single configuration file.
+To deploy a workload using Threeport, you minimally need to create two API objects: a
+`WorkloadDefinition` and a `WorkloadInstance`.  We can create both resources with a single
+configuration file.
 
 First, create a workspace on your local filesystem:
 
@@ -85,9 +83,8 @@ Download a sample workload config as follows:
 curl -O https://raw.githubusercontent.com/qleet/tptctl/v0.2.1/sample/go-web3-workload.yaml
 ```
 
-You now have the workload config on your local filesystem.  If you open the file
-you'll see it has a configuration for the three resources.  Let's dig into what
-each of them represent:
+You now have the workload config on your local filesystem.  If you open the file you'll
+see it has a configuration for two resources. Let's dig into what each of them represent:
 
 ### Workload Definition
 
@@ -113,23 +110,13 @@ The `WorkloadInstance` refers to the workload definition and actually deploys
 the instance of the workload.  It also refers to the cluster which is set up as
 the default when we created Threeport above.
 
-### Workload Service Dependency
-
-The `Workload Service Dependency` creates a method to manage services that are
-accessed by your app over the network.  When you create a workload service
-dependency, Threeport provisions a forward proxy.  This forward proxy consists
-of an Envoy proxy and a Kubernetes operator that configures Envoy to forward
-traffic to a given destination.  In this case, when the sample app calls the
-proxy, Envoy will forward the request to `rpc.ankr.com/eth` which is a publicly
-available RPC service provided by [ankr](https://www.ankr.com/).
-
 We can now create the workload as follows:
 
 ```bash
 tptctl create workload --config go-web3-workload.yaml
 ```
 
-This command calls the the Threeport API to create those three Workload objects.
+This command calls the the Threeport API to create those two Workload objects.
 The API notifies the workload controller via the message broker.  The workload
 controller processes the workload definition and creates the workload by calling
 the Kubernetes API.  Also, since a workload service dependency was created, the
@@ -214,13 +201,12 @@ guide.
 When we installed Threeport using `tptctl create threeport` we created a new
 control plane on a local kind Kubernetes cluster.
 
-When we installed the sample app using `tptctl create workload` we called the
-API to create the three workload objects: a definition, instance and service
-dependency.  The reconciliation for these objects was carried out by the
-workload controller which created the necessary Kubernetes resources via the
-Kubernetes control plane.  We spun up the sample app itself as well as the
-forward proxy components which manage connections to the Ethereum RPC providers
-needed by the sample app.
+When we installed the sample app using `tptctl create workload` we called the API to
+create the two workload objects: a definition and an instance.  The reconciliation for
+these objects was carried out by the workload controller which created the necessary
+Kubernetes resources via the Kubernetes control plane.  We spun up the sample app itself
+as well as the forward proxy components which manage connections to the Ethereum RPC
+providers needed by the sample app.
 
 When the end user queries the sample app for the balance of an Ethereum wallet,
 the sample app calls the forward proxy server which forwards the request to the

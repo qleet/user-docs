@@ -51,7 +51,7 @@ tptctl help
 To install the Threeport control plane locally:
 
 ```bash
-tptctl create threeport --name test
+tptctl create control-plane --provider=kind --name test
 ```
 
 This will create a local kind Kubernetes cluster and install all of the control

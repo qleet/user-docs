@@ -64,10 +64,6 @@ To view the pods that constitute the Threeport control plane:
 kubectl get po -n threeport-control-plane
 ```
 
-The Threeport API is now available at localhost:1323.  Ensure that it is up and
-running by opening the Swagger API docs at:
-[http://localhost:1323/swagger/index.html](http://localhost:1323/swagger/index.html).
-
 ## Deploy A Workload
 
 To deploy a workload using Threeport, you minimally need to create two API

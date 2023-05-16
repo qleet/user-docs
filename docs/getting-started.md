@@ -48,16 +48,35 @@ tptctl help
 
 ## Install Threeport
 
+### Local
 To install the Threeport control plane locally:
 
 ```bash
-tptctl create control-plane --provider=kind --name test
+tptctl create control-plane --provider kind --name test
 ```
 
 This will create a local kind Kubernetes cluster and install all of the control
 plane components.  It will also register the same kind cluster as the default
 compute space cluster for tenant workloads.
 
+### Elastic Kubernetes Service (AWS)
+
+This section assumes you already have AWS credentials configured on your local machine
+with a profile named "threeport".  Follow their
+[quickstart page](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html)
+for steps on how to do this.
+
+With credentials configured, run the following to install the Threeport control plane in EKS:
+
+```bash
+tptctl create control-plane --provider eks --aws-config-profile threeport --name test
+```
+
+This will create a remote EKS Kubernetes cluster and install all of the control plane
+components.  It will also register the same EKS cluster as the default compute space
+cluster for tenant workloads.
+
+### Validate Deployment
 To view the pods that constitute the Threeport control plane:
 
 ```bash

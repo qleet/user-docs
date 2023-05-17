@@ -113,8 +113,7 @@ that can be deployed as many times as you like.  It includes a field
 file:
 
 ```bash
-mkdir sample
-curl -o sample/wordpress.yaml https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress.yaml
+curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-manifest.yaml
 ```
 
 That file contains the Kubernetes manifest for the resources required to deploy an
@@ -144,6 +143,12 @@ Confirm the Wordpress application is running with:
 kubectl get pods
 ```
 
+We can also use `tptctl` to view deployed workloads.
+
+```bash
+tptctl get workloads
+```
+
 You can now see the sample by forwarding a local port to it with this command:
 
 ```bash
@@ -169,6 +174,11 @@ these objects was carried out by the workload controller which created the neces
 Kubernetes resources via the Kubernetes control plane.
 
 ## Clean Up
+
+To delete a workload:
+```bash
+tptctl delete workload --config wordpress-workload.yaml
+```
 
 To uninstall the Threeport control plane locally:
 

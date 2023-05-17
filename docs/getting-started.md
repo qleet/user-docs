@@ -140,25 +140,32 @@ The API notifies the workload controller via the message broker.  The workload
 controller processes the workload definition and creates the workload by calling
 the Kubernetes API.
 
-Confirm the Wordpress application is running with:
-
-```bash
-kubectl get pods
-```
-
-We can also use `tptctl` to view deployed workloads:
+We can use `tptctl` to view deployed workloads:
 
 ```bash
 tptctl get workloads
 ```
 
-You can now see the sample by forwarding a local port to it with this command:
+We can also use `kubectl` to query the Kubernetes API directly. First, set a local
+environment variable to the appropriate namespace for the Wordpress application:
 
 ```bash
-kubectl port-forward svc/getting-started-wordpress 8080:80
+NAMESPACE=$(kubectl get namespace -l app.kubernetes.io/name=wordpress -o=jsonpath='{.items[*].metadata.name}')
 ```
 
-Now visit the app [here](http://localhost:8888).  It will display the welcome screen of
+Confirm the Wordpress application is running with:
+
+```bash
+kubectl get pods -l app.kubernetes.io/instance=getting-started -n $NAMESPACE
+```
+
+You can now visit the Wordpress application by forwarding a local port to it with this command:
+
+```bash
+kubectl port-forward svc/getting-started-wordpress 8080:80 -n $NAMESPACE
+```
+
+Now visit the app [here](http://localhost:8080).  It will display the welcome screen of
 the Wordpress application.
 
 ## Summary

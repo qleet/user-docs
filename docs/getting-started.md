@@ -48,7 +48,10 @@ tptctl help
 
 ## Install Threeport
 
-### Local
+Threeport can be deployed on one of two providers: Kind (for local development) and EKS
+(for AWS deployment).
+
+### Kind
 To install the Threeport control plane locally:
 
 ```bash
@@ -59,7 +62,7 @@ This will create a local kind Kubernetes cluster and install all of the control
 plane components.  It will also register the same kind cluster as the default
 compute space cluster for tenant workloads.
 
-### Elastic Kubernetes Service (AWS)
+### EKS
 
 This section assumes you already have AWS credentials configured on your local machine
 with a profile named "threeport".  Follow their
@@ -80,7 +83,7 @@ cluster for tenant workloads.
 To view the pods that constitute the Threeport control plane:
 
 ```bash
-kubectl get po -n threeport-control-plane
+kubectl get pods -n threeport-control-plane
 ```
 
 ## Deploy A Workload
@@ -143,7 +146,7 @@ Confirm the Wordpress application is running with:
 kubectl get pods
 ```
 
-We can also use `tptctl` to view deployed workloads.
+We can also use `tptctl` to view deployed workloads:
 
 ```bash
 tptctl get workloads

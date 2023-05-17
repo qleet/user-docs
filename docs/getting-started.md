@@ -150,7 +150,7 @@ We can also use `kubectl` to query the Kubernetes API directly. First, set a loc
 environment variable to the appropriate namespace for the Wordpress application:
 
 ```bash
-NAMESPACE=$(kubectl get namespace -l app.kubernetes.io/name=wordpress -o=jsonpath='{.items[*].metadata.name}')
+NAMESPACE=$(kubectl get namespace -l app.kubernetes.io/name=wordpress -o=jsonpath='{.items[0].metadata.name}')
 ```
 
 Confirm the Wordpress application is running with:

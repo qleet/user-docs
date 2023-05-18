@@ -9,27 +9,28 @@ the action and updates the status of the object in the API.
 
 ![Workload Controller](../img/WorkloadController.png)
 
-1. A developer requests a workload and the API writes the new objects to the
-   database.
-2. Once persisted the API notifies the message broker of the change, including
+1. A developer requests a workload by sending a request to the API, usually
+   using the CLI tool `tptctl`.
+1. The API validates the request and then stores the workload objects'
+   configuration values in the database.
+1. Once persisted, the API notifies the message broker of the change, including
    the database ID of the objects in question.
-3. The message broker delivers the notification to the correct Threeport
+1. The message broker delivers the notification to the correct Threeport
    controller.  If no Threeport controller is available immediately due to load
    or temporary outage, the NATS Jetstream broker holds the message until a
    Threeport controller instance becomes available.
-4. The Threeport controller puts a lock on the specific object by type and
+1. The Threeport controller puts a lock on the specific object by type and
    unique ID.  That way if another change is made to the same object before
    reconciliation is complete, the first change is completed and then the second
    change is executed so that race conditions don't develop.  In the event that
    a reconciliation cannot be completed, such as when a lock exists on a
    particular object, the notification is requeued through the broker so that it
    is performed at a later time.
-5. Reconciliation is completed.  In this case the workload will be deployed and
-   the configuration for the service dependency is applied through the
-   Kubernetes API of the target cluster for the workload.
-6. Once the operation is successfully reconciled, the Workload controller
+1. Reconciliation is completed.  In this case, the workload is deployed by
+   calling the Kubernetes API of the target cluster for the workload.
+1. Once the operation is successfully reconciled, the Workload controller
    updates the status of the object through the API.
-7. Finally, the Threeport controller releases the lock on the object instance so
+1. Finally, the Threeport controller releases the lock on the object instance so
    that it may undergo any future reconciliation.
 
 ## Reconcilers
@@ -37,7 +38,7 @@ the action and updates the status of the object in the API.
 To drill into a little more detail, a Threeport controller internally consists
 of one or more reconcilers.  Each reconciler is responsible for the state of a
 single object type.  To continue the example above, two objects were created by
-the developer.  A WorkloadInstance and a WorkloadServiceDependency.  The
+the developer.  A WorkloadDefinition and a WorkloadInstance.  The
 Workload controller has a distinct reconciler for each object.
 
 ![Workload Controller Reconcilers](../img/ThreeportReconcilers.png)
@@ -58,10 +59,10 @@ is complete, the lock is released.
 
 The green arrows show the calls from the reconcilers to the Kubernetes API in
 the Compute Space.  The Kubernetes API provides the primary interface point for
-the reconcilers.  No calls are made into processes or workloads in those
-clusters as a rule.  Any custom operations that are not satisfied by Kubernetes
-are achieved with custom Kubernetes Operators that can be configured and
-triggered through the Kubernetes API.
+the reconcilers to the compute space.  No calls are made into processes or
+workloads in those clusters as a rule.  Any custom operations that are not
+satisfied by Kubernetes are achieved with custom Kubernetes Operators that can
+be configured and triggered through the Kubernetes API.
 
 The purple arrows show the calls back to the API to update other related objects
 or write the status of the object reconciled.

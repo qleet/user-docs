@@ -1,6 +1,6 @@
 # Threeport
 
-Threeport is an application orchestration platform.  It is powered by
+Threeport is an application orchestration platform.  It is powered by a
 distributed, application-centric control plane that manages the following in
 response to app requirements:
 

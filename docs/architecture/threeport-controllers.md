@@ -1,6 +1,6 @@
 # Threeport Controllers
 
-Threeport controllers provide the operational reconciliation of state in the
+Threeport controllers perform the state reconciliation in the
 system.  When a user deploys a workload, the change is made to the datastore
 through the Threeport RESTful API.  Once that change has been successfully
 persisted, the API notifies the appropriate controller via the message broker.

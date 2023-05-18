@@ -6,9 +6,10 @@ clusters.
 There have been many attempts at federating Kubernetes using Kubernetes itself,
 i.e. Kubernetes Operators that install and keep an inventory of clusters as well
 as manage multi-cluster app deployments.  Kubernetes was designed to be a
-datacenter abstraction, not a global software fleet abstraction.  It has
-inherent scaling and availability constraints that prevent it from providing
-this global abstraction layer.
+datacenter-level abstraction and it performs this function very well.  It was
+not designed to be a global software fleet abstraction and it has inherent
+scaling and availability constraints that prevent it from providing the ideal
+solution to this concern.
 
 A global federation layer must be highly scalable and have geo-redundant
 availability.  A control plane for all your software deployments must have the
@@ -20,10 +21,10 @@ appropriate capacity and resilience for the task.
 are not horizontally scalable.  When deployed in a highly
 available configuration, only one controller is active at any given time and
 they use leader election to determine which of a set of identical controllers
-manage operations at any given time.  In the case of a larger retailer that uses
-Kubernetes in their outlets, they may have many thousands of clusters to manage
-along with the software in those clusters.  This is a demanding volume of state
-to reconcile for a single controller.
+manage operations at any given time.  In many use-cases, many thousands of
+clusters must be managed coherently, not to mention the software in those
+clusters.  This is a tremendous amount of state reconcilation to be performed by
+controllers that do not share load across multiple instances.
 
 ## Kubernetes Datastore
 
@@ -40,8 +41,8 @@ is not the best choice.
 ## Threeport Controllers
 
 Threeport controllers inherit a lot of design principles from Kubernetes.  They
-are level-triggered reconcilers of state that operate on a non-terminating loop
-to ensure your desired state is realized in the system.  One thing that
+are level-triggered state reconciliation workloads that operate on a non-terminating
+loop to ensure your desired state is realized in the system.  One thing that
 Threeport controllers add is horizontal scalability.  Any number of Threeport
 Controllers can operate simultaneously to manage the same set of object types.
 They use NATS Jetstream to broker notifications to help achieve this.  In

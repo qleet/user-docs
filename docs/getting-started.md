@@ -77,7 +77,7 @@ deployed on one of two providers:
   have docker installed on your machine.  This is useful for testing out
   Threeport and getting an idea of how it works.
 * [AWS Elastic Kubernetes Service](https://aws.amazon.com/eks/): this will spin
-  up a Kubernetes cluter in AWS and intall Threeport there.  It requires you
+  up a Kubernetes cluster in AWS and intall Threeport there.  It requires you
   have an AWS account and API keys.  This is useful for testing Threeport on a
   remote cloud provider.
 
@@ -244,13 +244,13 @@ kubectl port-forward svc/getting-started-wordpress 8080:80 -n $NAMESPACE
 Now visit the app [here](http://localhost:8080).  It will display the welcome screen of
 the Wordpress application.
 
-If using the kind provider, you can get the AWS hostname using this command:
+If using the EKS provider, you can get the AWS hostname using this command:
 
 ```bash
 kubectl get svc getting-started-wordpress -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
-Copy-paste that hostname into your browser to see the Wordprss app.
+Copy-paste that hostname into your browser to see the Wordpress app.
 
 ## Summary
 
@@ -273,7 +273,7 @@ manages Kubernetes workloads using a workload abstraction and piece of software:
 the workload controller.  This enables many benefits that will be in upcoming
 releases:
 
-* Support Service Depenendency Management: Installing and configuring support
+* Support Service Dependency Management: Installing and configuring support
   services such as ingress, TLS termination, DNS management and more.
 * Cloud Provider Service Dependency Management: Calling cloud providers on your
   behalf to spin up managed services such as S3 and RDS that your app relies on.
@@ -281,7 +281,7 @@ releases:
   region or on a different cloud provider, Threeport can manage those
   dependencies at runtime with the intelligence of a software controller (as
   opposed to configs that are rendered with templates or overlays using
-  human-defined environment-specific values.
+  human-defined environment-specific values).
 
 ## Clean Up
 

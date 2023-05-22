@@ -161,9 +161,8 @@ are running.
 
 ## Deploy a Workload
 
-To deploy a workload using Threeport, you minimally need to create two API objects: a
-`WorkloadDefinition` and a `WorkloadInstance`.  We can create both resources with a single
-configuration file.
+In this guide, we're going to use the simplest possible mechanism to deploy an
+app.  It uses a very basic workload config.
 
 First, create a workspace on your local filesystem:
 
@@ -179,28 +178,25 @@ curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpr
 ```
 
 You now have the workload config on your local filesystem.  If you open the file you'll
-see it has a configuration for two resources. Let's dig into what each of them represent:
+see it has just two fields:
 
-### Workload Definition
+```yaml
+Workload:
+  Name: "wordpress"
+  YAMLDocument: "wordpress-manifest.yaml"
+```
 
-The `WorkloadDefinition` is what it sounds like: a definition for a workload
-that can be deployed as many times as you like.  It includes a field
-`YAMLDocument` that refers to a file on your filesystem.  Let's download that
-file:
+The `Name` field is an arbitrary user-defined name that must be unique, i.e. no
+other workload may use the same name.
+
+The `YAMLDocument` field refers to another file with the Kubernetes resource
+manifests.  Download that file as well:
 
 ```bash
 curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-manifest.yaml
 ```
 
-That file contains the Kubernetes manifest for the resources required to deploy an
-instance of Wordpress.
-
-### Workload Instance
-
-The `WorkloadInstance` refers to the workload definition and actually deploys
-the instance of the workload.  It also refers to the cluster which is set up as
-the default when we created Threeport above.
-
+That's all you need in order to deploy.
 
 ### Create Workload
 

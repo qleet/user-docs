@@ -264,10 +264,10 @@ these objects was carried out by the workload controller which created the neces
 Kubernetes resources via the Kubernetes control plane.
 
 While this approach doesn't provide any special outcomes that you could not have
-achieved with other tools, it does do something unique under the hood: it
-manages Kubernetes workloads using a workload abstraction and piece of software:
-the workload controller.  This enables many benefits that will be in upcoming
-releases:
+achieved with other tools, it does do something unique under the hood.  It
+manages Kubernetes workloads using a workload abstraction and piece of software
+known as a workload controller.  This enables many benefits that will be in
+upcoming releases:
 
 * Support Service Dependency Management: Installing and configuring support
   services such as ingress, TLS termination, DNS management and more.

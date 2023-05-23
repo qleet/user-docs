@@ -28,7 +28,7 @@ Otherwise, look up the version at the [releases
 page](https://github.com/threeport/releases/releases) and set it like so:
 
 ```bash
-TPTCTL_VERSION=v0.1.1  # substitute latest version
+TPTCTL_VERSION=v0.1.2  # substitute latest version
 ```
 
 ### Download
@@ -77,7 +77,7 @@ deployed on one of two providers:
   have docker installed on your machine.  This is useful for testing out
   Threeport and getting an idea of how it works.
 * [AWS Elastic Kubernetes Service](https://aws.amazon.com/eks/): this will spin
-  up a Kubernetes cluster in AWS and intall Threeport there.  It requires you
+  up a Kubernetes cluster in AWS and install Threeport there.  It requires you
   have an AWS account and API keys.  This is useful for testing Threeport on a
   remote cloud provider.
 
@@ -109,7 +109,7 @@ compute space cluster for tenant workloads.
 
 ### EKS
 
-This section assumes you already have AWS account and credentials configured on
+This section assumes you already have an AWS account and credentials configured on
 your local machine with a profile named "default".  Follow their
 [quickstart page](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html)
 for steps on how to do this.
@@ -137,8 +137,11 @@ It will create a remote EKS Kubernetes cluster and install all of the control pl
 components.  It will also register the same EKS cluster as the default compute space
 cluster for tenant workloads.
 
-Note: if you would like to use `kubectl` against the cluter where Threeport is
-running and you have the `aws` CLI installed you can update your kubeconfig
+Note: if you would like to use
+[kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+against the cluter where Threeport is
+running and you have the [AWS CLI](https://aws.amazon.com/cli/)
+installed you can update your kubeconfig
 with:
 
 ```bash
@@ -156,7 +159,7 @@ kubectl get pods -n threeport-control-plane
 
 Note: if you notice any pods crashlooping, give them a few minutes.  The
 workload controller depends on the API server which, in turn, depends on the
-database and message broker.  Each component will come up when once its dependencies
+database and message broker.  Each component will come up once its dependencies
 are running.
 
 ## Deploy a Workload
@@ -206,10 +209,10 @@ We can now create the workload as follows:
 tptctl create workload --config wordpress-workload.yaml
 ```
 
-This command calls the the Threeport API to create those two Workload objects.
+This command calls the the Threeport API to create the Workload objects.
 The API notifies the workload controller via the message broker.  The workload
-controller processes the workload definition and creates the workload by calling
-the Kubernetes API.
+controller processes the workload definition and creates the workload instance
+by calling the Kubernetes API.
 
 We can use `tptctl` to view deployed workloads:
 

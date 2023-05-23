@@ -1,12 +1,89 @@
 # Getting Started
 
-In this guide we'll install the qleetctl CLI tool on your local machine and then
-install the QleetOS control plane locally using qleetctl.  Then we'll install a
-sample app using QleetOS.
+This guide consists of the following parts:
 
-## Install qleetctl
+* [Install tptctl](#install-tptctl): tptctl is the Threeport command line tool
+  used to manage Threeport itself as well as workloads that run on Threeport.
+* [Install Threeport](#install-threeport): before you can manage workloads using
+  Threeport, you first need an instance of the Threeport control plane.
+* [Deploy a Workload](#deploy-a-workload): deploy a wordpress sample app on
+  Threeport.
+* [Summary](#summary): review what we did in this guide.
+* [Clean Up](#clean-up): tear down the workload and the control plane.
 
-In order to run QleetOS locally, you must first have [Docker
+## Install tptctl
+
+Note: while we're building releases for Windows, they are not tested and not
+expected to work at this time.
+
+### Get Latest Version
+
+If you have `jq` installed, run the following command:
+
+```bash
+TPTCTL_VERSION=$(curl -s "https://api.github.com/repos/threeport/releases/releases/latest" | jq '.tag_name' -r)
+```
+
+Otherwise, look up the version at the [releases
+page](https://github.com/threeport/releases/releases) and set it like so:
+
+```bash
+TPTCTL_VERSION=v0.1.2  # substitute latest version
+```
+
+### Download
+
+Download the release and checksums:
+```bash
+curl -LO "https://github.com/threeport/releases/releases/download/$TPTCTL_VERSION/tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz"
+curl -L "https://github.com/threeport/releases/releases/download/$TPTCTL_VERSION/checksums.txt" > checksums.txt
+```
+
+### Verify
+
+Optional but recommended.
+
+Run the following command on Linux to verify the integrity of the package:
+
+```bash
+sha256sum -c --ignore-missing checksums.txt
+```
+
+### Install
+
+```bash
+tar xf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz && sudo mv tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)/tptctl /usr/local/bin
+```
+
+### Cleanup
+
+```bash
+rm checksums.txt tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz && rm -rf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)
+```
+
+### View Usage Info
+
+```bash
+tptctl help
+```
+
+## Install Threeport
+
+The Threeport control plane itself runs on Kubernetes.  Currently, it can be
+deployed on one of two providers:
+
+* [Kind](https://kind.sigs.k8s.io/): this will run Kubernetes in docker
+  containers on your local machine and install Threeport there.  It requires you
+  have docker installed on your machine.  This is useful for testing out
+  Threeport and getting an idea of how it works.
+* [AWS Elastic Kubernetes Service](https://aws.amazon.com/eks/): this will spin
+  up a Kubernetes cluster in AWS and install Threeport there.  It requires you
+  have an AWS account and API keys.  This is useful for testing Threeport on a
+  remote cloud provider.
+
+### Kind
+
+In order to run Threeport locally, you must first have [Docker
 Desktop](https://docs.docker.com/desktop/install/mac-install/) installed if on a
 Mac or [Docker Engine](https://docs.docker.com/engine/install/) on Linux.
 
@@ -18,251 +95,210 @@ sudo apt-get install gcc docker.io
 sudo usermod -aG docker $USER
 ```
 
-Once docker is installed, you can install qleetctl using Homebrew (recommended)
-or by downloading the binary release from Github.
-
-### Homebrew
-
-[Homebrew](https://brew.sh/) offers the simplest install for Mac and Linux and
-is the recommended install method:
+To install the Threeport control plane locally:
 
 ```bash
-brew tap qleet/tap
-brew install qleet/tap/qleetctl
+tptctl create control-plane --provider kind --name test
 ```
 
-### Binary Install
-
-Currently, qleetctl requires that you have the following tools installed on your
-local machine.  If you use Homebrew to install, these dependencies will be
-handled for you.  Otherwise, ensure these tools are installed first:
-
-* [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-* [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)
-* [wget](https://www.gnu.org/software/wget/)
-* [jq](https://github.com/stedolan/jq/wiki/Installation)
-
-Then install qleetctl:
-
-```bash
-VERSION=$(curl --silent "https://api.github.com/repos/qleet/qleetctl/releases/latest" | jq '.tag_name' -r)
-wget https://github.com/qleet/qleetctl/releases/download/${VERSION}/qleetctl_${VERSION}_$(echo $(uname))_$(uname -m).tar.gz -O - |\
-    tar -xz && sudo mv qleetctl /usr/local/bin/qleetctl
-```
-
-Usage info for qleetctl can be seen as follows:
-
-```bash
-qleetctl help
-```
-
-## Install QleetOS
-
-To install the QleetOS control plane locally:
-
-```bash
-qleetctl create qleetos --name test
-```
+It will take a few minutes for this process to complete.
 
 This will create a local kind Kubernetes cluster and install all of the control
 plane components.  It will also register the same kind cluster as the default
 compute space cluster for tenant workloads.
 
-To view the pods that constitute the QleetOS control plane:
+### EKS
+
+This section assumes you already have an AWS account and credentials configured on
+your local machine with a profile named "default".  Follow their
+[quickstart page](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html)
+for steps on how to do this.
+
+Note: if you have the `~/.aws/config` and `~/.aws/credentials` files on your
+filesystem, you're likely already set up.
+
+You also will need your AWS account ID.  It can be found in the AWS console.
+Log in to AWS and look a the top-right of the console.  It will say something like
+`username @ 1111-2222-3333`.  The 12 digit number (without dashes) is your account ID.
+
+With credentials configured, run the following to install the Threeport control plane in EKS:
 
 ```bash
-kubectl get po -n threeport-control-plane
+tptctl create control-plane \
+    --provider eks \
+    --provider-account-id [your AWS account number] \
+    --name test
 ```
 
-Note: Threeport is the name of the control plane.  You can think of Threeport as
-the kernel and QleetOS as a distribution of the operating system.
+This process will usually take 10-15 minutes.  It can take even longer on some
+AWS accounts.  You will see ouput as AWS resources are created.
 
-The QleetOS API is now available at localhost:1323.  Ensure that it is up and
-running by opening the Swagger API docs at:
-[http://localhost:1323/swagger/index.html](http://localhost:1323/swagger/index.html).
+It will create a remote EKS Kubernetes cluster and install all of the control plane
+components.  It will also register the same EKS cluster as the default compute space
+cluster for tenant workloads.
 
-## Deploy A Workload
+Note: if you would like to use
+[kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+against the cluter where Threeport is
+running and you have the [AWS CLI](https://aws.amazon.com/cli/)
+installed you can update your kubeconfig
+with:
 
-To deploy a workload using QleetOS, you minimally need to create two API objects:
-a `WorkloadDefinition` and a `WorkloadInstance`.  For this example, we're also
-going to create a `WorkloadServiceDependency` to manage connections to the
-blockchain.  More on this shortly.  We can create all three resources with a
-single configuration file.
+```bash
+aws eks update-kubeconfig --name threeport-test
+```
+
+### Validate Deployment
+
+If you have `kubectl` installed and wish to view the pods that constitute the
+Threeport control plane:
+
+```bash
+kubectl get pods -n threeport-control-plane
+```
+
+Note: if you notice any pods crashlooping, give them a few minutes.  The
+workload controller depends on the API server which, in turn, depends on the
+database and message broker.  Each component will come up once its dependencies
+are running.
+
+## Deploy a Workload
+
+In this guide, we're going to use the simplest possible mechanism to deploy an
+app.  It uses a very basic workload config.
 
 First, create a workspace on your local filesystem:
 
 ```bash
-mkdir qleetos-test
-cd qleetos-test
+mkdir threeport-test
+cd threeport-test
 ```
 
 Download a sample workload config as follows:
 
 ```bash
-curl -O https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-workload.yaml
+curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-workload.yaml
 ```
 
-You now have the workload config on your local filesystem.  If you open the file
-you'll see it has a configuration for the three resources.  Let's dig into what
-each of them represent:
+You now have the workload config on your local filesystem.  If you open the file you'll
+see it has just two fields:
 
-### Workload Definition
+```yaml
+Workload:
+  Name: "wordpress"
+  YAMLDocument: "wordpress-manifest.yaml"
+```
 
-The `WorkloadDefinition` is what it sounds like: a definition for a workload
-that can be deployed as many times as you like.  It includes a field
-`YAMLDocument` that refers to a file on your filesystem.  Let's download that
-file:
+The `Name` field is an arbitrary user-defined name that must be unique, i.e. no
+other workload may use the same name.
+
+The `YAMLDocument` field refers to another file with the Kubernetes resource
+manifests.  Download that file as well:
 
 ```bash
-mkdir sample
-curl -o sample/go-web3-sample-app-manifest.yaml https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-sample-app-manifest.yaml
+curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-manifest.yaml
 ```
 
-That file contains Kubernetes manifest for four resources: a namespace,
-configmap, deployment and service.  Note that the configmap tells the sample app
-to use `http://forward-proxy.forward-proxy-system.svc.cluster.local` for its
-RPC endpoint.  This URL uses a local DNS entry that will be set up by QleetOS as
-defined by the Workload Service Dependency which we'll discuss in more detail
-shortly.
+That's all you need in order to deploy.
 
-### Workload Instance
-The `WorkloadInstance` refers to the workload definition and actually deploys
-the instance of the workload.  It also refers to the cluster which is set up as
-the default when we created QleetOS above.
-
-### Workload Service Dependency
-
-The `Workload Service Dependency` creates a method to manage services that are
-accessed by your app over the network.  When you create a workload service
-dependency, QleetOS provisions a forward proxy.  This forward proxy consists of
-an Envoy proxy and a Kubernetes operator that configures Envoy to forward
-traffic to a given destination.  In this case, when the sample app calls the
-proxy, Envoy will forward the request to `rpc.ankr.com/eth` which is a publicly
-available RPC service provided by [ankr](https://www.ankr.com/).
+### Create Workload
 
 We can now create the workload as follows:
 
 ```bash
-qleetctl create workload --config go-web3-workload.yaml
+tptctl create workload --config wordpress-workload.yaml
 ```
 
-This command calls the the Qleet API to create those three Qleet objects.  The
-API notifies the workload controller via the message broker.  The workload
-controller processes the workload definition and creates the workload by calling
-the Kubernetes API.  Also, since a workload service dependency was created, the
-workload controller deploys the forward proxy components and configures the
-Envoy proxy.
+This command calls the the Threeport API to create the Workload objects.
+The API notifies the workload controller via the message broker.  The workload
+controller processes the workload definition and creates the workload instance
+by calling the Kubernetes API.
 
-You can see the forward proxy components as follows:
+We can use `tptctl` to view deployed workloads:
 
 ```bash
-kubectl get po -n forward-proxy-system
+tptctl get workloads
 ```
 
-You should see a pair of pods for the `forward-proxy-server` deployment.  These
-are the Envoy proxy.  Also, you should find a
-`forward-proxy-controller-manager`.  This is the Kubernetes operator that
-serves as a control plane for Envoy and configures it.  It uses a ForwardProxy
-custom resource that was created by the workload controller.  You can see the
-content of that resource with the following:
+We can also use `kubectl` to query the Kubernetes API directly. First, set a local
+environment variable to the appropriate namespace for the Wordpress application:
 
 ```bash
-kubectl get forwardproxy -n forward-proxy-system -oyaml
+NAMESPACE=$(kubectl get namespace -l app.kubernetes.io/name=wordpress -o=jsonpath='{.items[0].metadata.name}')
 ```
 
-Once the forward proxy is running and configured, the sample app can start and
-connect to its RPC endpoint.  You can see that workload with:
+Confirm the Wordpress application is running with:
 
 ```bash
-kubectl get po -n go-web3-sample-app
+kubectl get pods -l app.kubernetes.io/instance=getting-started -n $NAMESPACE
 ```
 
-You can now see the sample by forwarding a local port to it with this command:
+If using the kind provider, you can now visit the Wordpress application by
+forwarding a local port to it with this command:
 
 ```bash
-kubectl port-forward -n go-web3-sample-app svc/go-web3-sample-app 8888:8080
+kubectl port-forward svc/getting-started-wordpress 8080:80 -n $NAMESPACE
 ```
 
-Now visit the app [here](http://localhost:8888).  It will display the balance of
-an Ethereum wallet by getting the information from the blockchain.
+Now visit the app [here](http://localhost:8080).  It will display the welcome screen of
+the Wordpress application.
 
-## Update the Service Dependency
-
-Next, let's update the service dependency.  Download a new service dependency
-config:
+If using the EKS provider, you can get the AWS hostname using this command:
 
 ```bash
-curl -O https://raw.githubusercontent.com/qleet/qleetctl/v0.2.1/sample/go-web3-service-dependency-pokt.yaml
+kubectl get svc getting-started-wordpress -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
-This config file contains a new publicly available RPC endpoint to gain access
-to the Ethereum blockchain.  This one uses the [POKT
-network](https://www.pokt.network/).
-
-Update the serviced dependency:
-
-```bash
-qleetctl update workload-service-dependency --config go-web3-service-dependency-pokt.yaml
-```
-
-This command changes the workload service dependency which prompts the workload
-controller to update the ForwardProxy config.  This triggers the forward proxy
-operator to update the Envoy config.  You can see the updated forward proxy as
-follows:
-
-```bash
-kubectl get forwardproxy -n forward-proxy-system -oyaml
-```
-
-If you try out the sample app again, you'll see it still can access the
-blockchain, but through a different provider.  This service dependency is
-managed independently of the sample app.  No restart, hot reload or config
-reload of any kind is required by the sample app.  It remains using the RPC
-endpoint configured in its configmap and the Envoy proxy forwards the request to
-the correct destination on its behalf.
+Copy-paste that hostname into your browser to see the Wordpress app.
 
 ## Summary
 
 This diagram illustrates the relationships between components introduced in this
 guide.
 
-![QleetOS Getting Started](../img/QleetOSGettingStarted.png)
+![Threeport Getting Started](../img/ThreeportGettingStartedWordpress.png)
 
-When we installed QleetOS using `qleetctl create qleetos` we created a new
-control plane on a local kind Kubernetes cluster.
+When we installed Threeport using `tptctl create threeport` we created a new
+control plane on a new Kubernetes cluster.
 
-When we installed the sample app using `qleetctl create workload` we called the
-API to create the three workload objects: a definition, instance and service
-dependency.  The reconciliation for these objects was carried out by the
-workload controller which created the necessary Kubernetes resources via the
-Kubernetes control plane.  We spun up the sample app itself as well as the
-forward proxy components which manage connections to the Ethereum RPC providers
-needed by the sample app.
+When we installed the sample app using `tptctl create workload` we called the API to
+create the two workload objects: a definition and an instance.  The reconciliation for
+these objects was carried out by the workload controller which created the necessary
+Kubernetes resources via the Kubernetes control plane.
 
-When the end user queries the sample app for the balance of an Ethereum wallet,
-the sample app calls the forward proxy server which forwards the request to the
-destination configured by the QleetOS user.
+While this approach doesn't provide any special outcomes that you could not have
+achieved with other tools, it does do something unique under the hood.  It
+manages Kubernetes workloads using a workload abstraction and piece of software
+known as a workload controller.  This enables many benefits that will be in
+upcoming releases:
 
-Importantly, all dependencies are created in response to, and only when needed
-by, a tenant workload - the sample app in this case.  In this way QleetOS is
-application-centric.  It responds to app requirements and creates
-dependent services in response to those requirements, as opposed to most
-workload management systems that require infrastructure and support services to
-be installed ahead of time.
+* Support Service Dependency Management: Installing and configuring support
+  services such as ingress, TLS termination, DNS management and more.
+* Cloud Provider Service Dependency Management: Calling cloud providers on your
+  behalf to spin up managed services such as S3 and RDS that your app relies on.
+* Runtime Dependency Management: If you need to run your workload in a new
+  region or on a different cloud provider, Threeport can manage those
+  dependencies at runtime with the intelligence of a software controller (as
+  opposed to configs that are rendered with templates or overlays using
+  human-defined environment-specific values).
 
 ## Clean Up
 
-To uninstall the QleetOS control plane locally:
+To delete a workload:
+```bash
+tptctl delete workload --config wordpress-workload.yaml
+```
+
+To uninstall the Threeport control plane locally:
 
 ```bash
-qleetctl delete qleetos -n test
+tptctl delete control-plane -n test
 ```
 
 Remove the test configs from you filesystem:
 
 ```bash
 cd ../
-rm -rf qleetos-test
+rm -rf threeport-test
 ```
 

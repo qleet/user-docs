@@ -1,17 +1,17 @@
-site_name: QleetOS User Documentation
+site_name: Threeport User Documentation
 site_author: Qleet.io
 repo_url: https://github.com/qleet/user-docs
 repo_name: qleet/user-docs
 edit_uri: blob/main/docs/
 
 nav:
-  - QleetOS: 'index.md'
+  - Threeport: 'index.md'
   - Guides:
-    - 'Getting Started': 'guides/getting-started.md'
+    - 'guides/getting-started.md'
   - Architecture:
     - 'Overview': 'architecture/overview.md'
     - 'Tech Stack': 'architecture/tech-stack.md'
-    - 'Qleets': 'architecture/qleets.md'
+    - 'Threeport Controllers': 'architecture/threeport-controllers.md'
     - 'Kubernetes Federation': 'architecture/kubernetes-federation.md'
     - 'Software Delivery': 'architecture/software-delivery.md'
 

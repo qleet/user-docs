@@ -1,8 +1,8 @@
 # Threeport
 
-Threeport is an application orchestration platform.  It is powered by a
-distributed, application-centric control plane that manages the following in
-response to app requirements:
+Threeport is an application orchestration platform developed by Qleet, Inc.  It
+is powered by a distributed, application-centric control plane that manages the
+following in response to app requirements:
 
 * infrastructure
 * container orchestration

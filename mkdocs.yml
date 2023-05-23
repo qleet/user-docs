@@ -7,7 +7,7 @@ edit_uri: blob/main/docs/
 nav:
   - Threeport: 'index.md'
   - Guides:
-    - 'getting-started.md'
+    - 'guides/getting-started.md'
   - Architecture:
     - 'Overview': 'architecture/overview.md'
     - 'Tech Stack': 'architecture/tech-stack.md'

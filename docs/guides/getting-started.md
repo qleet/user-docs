@@ -256,7 +256,7 @@ Copy-paste that hostname into your browser to see the Wordpress app.
 This diagram illustrates the relationships between components introduced in this
 guide.
 
-![Threeport Getting Started](img/ThreeportGettingStartedWordpress.png)
+![Threeport Getting Started](../img/ThreeportGettingStartedWordpress.png)
 
 When we installed Threeport using `tptctl create threeport` we created a new
 control plane on a new Kubernetes cluster.

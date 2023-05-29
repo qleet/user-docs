@@ -117,6 +117,11 @@ for steps on how to do this.
 Note: if you have the `~/.aws/config` and `~/.aws/credentials` files on your
 filesystem, you're likely already set up.
 
+Also, ensure you have the required permissions to create the necessary resources
+in AWS.  If your user has the built-in `AdministratorAccess` policy attached, you can
+continue.  Otherwise, check out our [AWS Permissions guide](/guides/aws-iam)
+to make sure you can create the resources required to run a Threeport control plane.
+
 You also will need your AWS account ID.  It can be found in the AWS console.
 Log in to AWS and look a the top-right of the console.  It will say something like
 `username @ 1111-2222-3333`.  The 12 digit number (without dashes) is your account ID.

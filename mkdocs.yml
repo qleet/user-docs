@@ -8,6 +8,7 @@ nav:
   - Threeport: 'index.md'
   - Guides:
     - 'guides/getting-started.md'
+    - 'guides/aws-iam.md'
   - Architecture:
     - 'Overview': 'architecture/overview.md'
     - 'Tech Stack': 'architecture/tech-stack.md'

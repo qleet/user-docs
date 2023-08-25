@@ -67,6 +67,11 @@ rm checksums.txt tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz && rm -rf 
 tptctl help
 ```
 
+### Note for MacOS Users
+
+If you have issues running `tptctl` on your machine, follow the steps outlined by Apple
+[here](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac).
+
 ## Install Threeport
 
 The Threeport control plane itself runs on Kubernetes.  Currently, it can be

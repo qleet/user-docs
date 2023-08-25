@@ -20,6 +20,8 @@ theme:
   name: material
   favicon: img/favicon.ico
   logo: img/logo.png
+  features:
+    - content.code.copy
   palette:
     - scheme: default
       primary: indigo

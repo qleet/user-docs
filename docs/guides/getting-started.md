@@ -98,7 +98,7 @@ sudo usermod -aG docker $USER
 To install the Threeport control plane locally:
 
 ```bash
-tptctl create control-plane --provider kind --name test
+tptctl create control-plane --provider=kind --name=test --auth-enabled=false
 ```
 
 It will take a few minutes for this process to complete.

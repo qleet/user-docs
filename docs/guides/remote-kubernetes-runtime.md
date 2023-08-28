@@ -11,6 +11,13 @@ guide](../getting-started/) to set one up if you have not already done so.
 
 Note that EKS clusters are currently the only supported type of remote runtime.
 
+First, create a workspace on your local filesystem:
+
+```bash
+mkdir threeport-test
+cd threeport-test
+```
+
 To get started, a valid `AwsAccount` object must be created. Here is an example of what this config looks like:
 
 ```yaml
@@ -70,4 +77,18 @@ tptctl create kubernetes-runtime --config k8s-runtime.yaml
 View the status of the deployed kubernetes runtime instance:
 ```bash
 tptctl get kubernetes-runtime-instances
+```
+
+## Cleanup
+
+
+Run the following command to delete the remote kubernetes runtime instance:
+```bash
+tptctl delete kubernetes-runtime-instance --name eks-remote
+```
+
+Clean up the downloaded config files:
+```bash
+rm aws-account.yaml
+rm k8s-runtime.yaml
 ```

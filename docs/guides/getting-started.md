@@ -209,12 +209,25 @@ curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpr
 ```
 
 You now have the workload config on your local filesystem.  If you open the file you'll
-see it has just two fields:
+see it has the following fields:
 
 ```yaml
 Workload:
   Name: "wordpress"
   YAMLDocument: "wordpress-manifest.yaml"
+  KubernetesRuntimeInstance:
+    Name: compute-space-dev-0-0
+  # DomainName:
+  #   Name: www.example.com
+  #   Zone: Public
+  #   AdminEmail: admin@example.com
+  # Gateway:
+  #   TCPPort: 443
+  #   Path: /
+  #   TLSEnabled: true
+  #   ServiceName: getting-started-wordpress
+
+
 ```
 
 The `Name` field is an arbitrary user-defined name that must be unique, i.e. no
@@ -226,6 +239,13 @@ manifests.  Download that file as well:
 ```bash
 curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpress-manifest.yaml
 ```
+
+The `KubernetesRuntimeInstance` field refers to the compute space cluster that we wish to
+deploy to. It is already populated with the default compute space cluster.
+
+The remaining `DomainName` and `Gateway` fields are used to expose the wordpress
+application via HTTPS at a specified domain. These may be uncommented if you have deployed to
+EKS and have a Hosted Zone configured in Route53.
 
 That's all you need in order to deploy.
 
@@ -271,13 +291,9 @@ kubectl port-forward svc/getting-started-wordpress 8080:80 -n $NAMESPACE
 Now visit the app [here](http://localhost:8080).  It will display the welcome screen of
 the Wordpress application.
 
-If using the EKS provider, you can get the AWS hostname using this command:
-
-```bash
-kubectl get svc getting-started-wordpress -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-```
-
-Copy-paste that hostname into your browser to see the Wordpress app.
+If using the EKS provider with `DomainName` and `Gateway` fields uncommented, you should
+soon be able to navigate to your specified domain name and view the Wordpress app via
+HTTPS in your browser.
 
 ## Summary
 

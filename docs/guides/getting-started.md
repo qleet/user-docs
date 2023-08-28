@@ -110,18 +110,6 @@ tptctl create control-plane \
     --name=test
 ```
 
-By default, `tptctl` will generate and use a keypair for authentication to the Threeport
-API. If you wish to disable this behavior and expose the Threeport API via HTTP, append
-the `--auth-enabled=false` flag. This will also expose Threeport API [Swagger](https://swagger.io/)
-documentation at [http://localhost/swagger/index.html](http://localhost/swagger/index.html).
-
-```bash
-tptctl create control-plane \
-    --provider=kind \
-    --name=test \
-    --auth-enabled=false
-```
-
 It will take a few minutes for this process to complete.
 
 This will create a local kind Kubernetes cluster and install all of the control
@@ -157,12 +145,9 @@ tptctl create control-plane \
 ```
 
 This process will usually take 10-15 minutes.  It can take even longer on some
-AWS accounts.  You will see ouput as AWS resources are created. We don't recommend using
-`--auth-enabled=false` when deploying to EKS because the Threeport API would be exposed to
-the public internet via HTTP and without authentication.
-
-It will create a remote EKS Kubernetes cluster and install all of the control plane
-components.  It will also register the same EKS cluster as the default compute space
+AWS accounts.  You will see ouput as AWS resources are created. It will create a remote
+EKS Kubernetes cluster and install all of the control plane components.  It will also
+register the same EKS cluster as the default compute space
 cluster for tenant workloads.
 
 Note: if you would like to use
@@ -346,3 +331,19 @@ cd ../
 rm -rf threeport-test
 ```
 
+
+## Authentication
+
+By default, `tptctl` will generate and use a keypair for authentication to the Threeport
+API via HTTPS. If you wish to disable this behavior and expose the Threeport API via HTTP, append
+the `--auth-enabled=false` flag. We only recommend using this on Kind and not EKS because
+it would result in the Threeport API being exposed to the public internet via
+HTTP and without authentication.
+
+## Swagger Documentation
+
+Threeport API endpoints are documented with [Swagger](https://swagger.io/) at
+`$THREEPORT_API_ENDPOINT/swagger/index.html`. This is most easily
+accessed by setting `--auth-enabled=false` on a Threeport control plane
+deployed to Kind and visiting
+[http://localhost/swagger/index.html](http://localhost/swagger/index.html).

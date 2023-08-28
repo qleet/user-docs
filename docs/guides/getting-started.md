@@ -103,7 +103,21 @@ sudo usermod -aG docker $USER
 To install the Threeport control plane locally:
 
 ```bash
-tptctl create control-plane --provider=kind --name=test --auth-enabled=false
+tptctl create control-plane \
+    --provider=kind \
+    --name=test
+```
+
+By default, `tptctl` will generate and use a keypair for authentication to the Threeport
+API. If you wish to disable this behavior and expose the Threeport API via HTTP, append
+the `--auth-enabled=false` flag. This will also expose Threeport API [Swagger](https://swagger.io/)
+documentation at [http://localhost/swagger/index.html](http://localhost/swagger/index.html).
+
+```bash
+tptctl create control-plane \
+    --provider=kind \
+    --name=test \
+    --auth-enabled=false
 ```
 
 It will take a few minutes for this process to complete.
@@ -141,7 +155,9 @@ tptctl create control-plane \
 ```
 
 This process will usually take 10-15 minutes.  It can take even longer on some
-AWS accounts.  You will see ouput as AWS resources are created.
+AWS accounts.  You will see ouput as AWS resources are created. We don't recommend using
+`--auth-enabled=false` when deploying to EKS because the Threeport API would be exposed to
+the public internet via HTTP and without authentication.
 
 It will create a remote EKS Kubernetes cluster and install all of the control plane
 components.  It will also register the same EKS cluster as the default compute space

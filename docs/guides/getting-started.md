@@ -52,13 +52,15 @@ sha256sum -c --ignore-missing checksums.txt
 ### Install
 
 ```bash
-tar xf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz && sudo mv tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)/tptctl /usr/local/bin
+tar xf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz
+sudo mv tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)/tptctl /usr/local/bin
 ```
 
 ### Cleanup
 
 ```bash
-rm checksums.txt tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz && rm -rf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)
+rm checksums.txt tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m).tar.gz
+rm -rf tptctl_${TPTCTL_VERSION}_$(uname)_$(uname -m)
 ```
 
 ### View Usage Info

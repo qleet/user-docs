@@ -7,7 +7,7 @@ that the Threeport API is deployed to.
 ## Prerequisites
 
 An instance of the Threeport API is required to get started. Follow the [getting started
-guide](guides/getting-started/) to set one up if you have not already done so.
+guide](../getting-started/) to set one up if you have not already done so.
 
 Note that EKS clusters are currently the only supported type of remote runtime.
 

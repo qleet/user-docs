@@ -79,6 +79,17 @@ View the status of the deployed kubernetes runtime instance:
 tptctl get kubernetes-runtime-instances
 ```
 
+Note: if you would like to use
+[kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+against the cluter where Threeport is
+running and you have the [AWS CLI](https://aws.amazon.com/cli/)
+installed you can update your kubeconfig
+with:
+
+```bash
+aws eks update-kubeconfig --name threeport-test
+```
+
 ## Cleanup
 
 

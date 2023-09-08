@@ -8,6 +8,7 @@ nav:
   - Threeport: 'index.md'
   - Guides:
     - 'guides/getting-started.md'
+    - 'guides/remote-kubernetes-runtime.md'
     - 'guides/aws-iam.md'
   - Architecture:
     - 'Overview': 'architecture/overview.md'
@@ -20,6 +21,8 @@ theme:
   name: material
   favicon: img/favicon.ico
   logo: img/logo.png
+  features:
+    - content.code.copy
   palette:
     - scheme: default
       primary: indigo

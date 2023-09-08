@@ -81,12 +81,12 @@ deployed on one of two providers:
 
 * [Kind](https://kind.sigs.k8s.io/): this will run Kubernetes in docker
   containers on your local machine and install Threeport there.  It requires you
-  have docker installed on your machine.  This is useful for testing out
-  Threeport and getting an idea of how it works.
+  have docker installed on your machine.  This install method is useful for
+  testing out Threeport and getting an idea of how it works.
 * [AWS Elastic Kubernetes Service](https://aws.amazon.com/eks/): this will spin
   up a Kubernetes cluster in AWS and install Threeport there.  It requires you
-  have an AWS account and API keys.  This is useful for testing Threeport on a
-  remote cloud provider.
+  have an AWS account and API keys.  This install method is useful for testing
+  Threeport on a remote cloud provider.
 
 ### Kind
 
@@ -107,8 +107,16 @@ To install the Threeport control plane locally:
 ```bash
 tptctl create control-plane \
     --provider=kind \
-    --name=test
+    --name=test \
+    --auth-enabled=false
 ```
+
+The `--provider` flag indicates that we're using kind to provision the
+underlying Kubernetes cluster.  The `--name` flag provides an arbitrary name for
+this control plane instance.  And the `--auth-enabled` flag indicates we want to
+turn off user authentication which is turned on by default and should only be
+turned off when testing locally.  Disabling auth will allow us to more easily
+explore the API in a subsequent step.
 
 It will take a few minutes for this process to complete.
 
@@ -152,9 +160,9 @@ cluster for tenant workloads.
 
 Note: if you would like to use
 [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-against the cluter where Threeport is
-running and you have the [AWS CLI](https://aws.amazon.com/cli/)
-installed you can update your kubeconfig
+against the cluster where Threeport is
+running, and you have the [AWS CLI](https://aws.amazon.com/cli/)
+installed, you can update your kubeconfig
 with:
 
 ```bash
@@ -171,9 +179,17 @@ kubectl get pods -n threeport-control-plane
 ```
 
 Note: if you notice any pods crashlooping, give them a few minutes.  The
-workload controller depends on the API server which, in turn, depends on the
+threeport controllers depend on the API server which, in turn, depends on the
 database and message broker.  Each component will come up once its dependencies
 are running.
+
+## Swagger Documentation
+
+Threeport API endpoints are documented with [Swagger](https://swagger.io/) at
+`$THREEPORT_API_ENDPOINT/swagger/index.html`. This is most easily
+accessed by setting `--auth-enabled=false` on a Threeport control plane
+deployed to Kind and visiting
+[http://localhost/swagger/index.html](http://localhost/swagger/index.html).
 
 ## Deploy a Workload
 
@@ -201,18 +217,17 @@ Workload:
   Name: "wordpress"
   YAMLDocument: "wordpress-manifest.yaml"
   KubernetesRuntimeInstance:
-    Name: compute-space-dev-0-0
+    Name: threeport-test
   # DomainName:
   #   Name: www.example.com
   #   Zone: Public
   #   AdminEmail: admin@example.com
   # Gateway:
+  #   Name: wordpress-gateway
   #   TCPPort: 443
   #   Path: /
   #   TLSEnabled: true
   #   ServiceName: getting-started-wordpress
-
-
 ```
 
 The `Name` field is an arbitrary user-defined name that must be unique, i.e. no
@@ -226,7 +241,10 @@ curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/wordpr
 ```
 
 The `KubernetesRuntimeInstance` field refers to the compute space cluster that we wish to
-deploy to. It is already populated with the default compute space cluster.
+deploy to. It is already populated with the default compute space cluster.  This
+field is not required since the `threeport-test` Kubernetes runtime instance
+is the default and will be used unless otherwise specified, but is included
+here for demo purposes.
 
 The remaining `DomainName` and `Gateway` fields are used to expose the wordpress
 application via HTTPS at a specified domain. These may be uncommented if you have deployed to
@@ -252,6 +270,11 @@ We can use `tptctl` to view deployed workloads:
 ```bash
 tptctl get workloads
 ```
+
+Note: the status of the workload will state `Reconciling` or `Down` for a short
+time until the workload is running.  It will usually take a minute or two for
+the container images to be pulled to start the containers.  Once the threeport
+agent confirms the workload is up, you will see the status become `Healthy`.
 
 We can also use `kubectl` to query the Kubernetes API directly. First, set a local
 environment variable to the appropriate namespace for the Wordpress application:
@@ -290,10 +313,10 @@ guide.
 When we installed Threeport using `tptctl create threeport` we created a new
 control plane on a new Kubernetes cluster.
 
-When we installed the sample app using `tptctl create workload` we called the API to
-create the two workload objects: a definition and an instance.  The reconciliation for
-these objects was carried out by the workload controller which created the necessary
-Kubernetes resources via the Kubernetes control plane.
+When we installed the sample app using `tptctl create workload` we called the threeport
+API to create the two workload objects: a definition and an instance.  The
+reconciliation for these objects was carried out by the workload controller
+which created the necessary Kubernetes resources via the Kubernetes control plane.
 
 While this approach doesn't provide any special outcomes that you could not have
 achieved with other tools, it does do something unique under the hood.  It
@@ -340,10 +363,3 @@ the `--auth-enabled=false` flag. We only recommend using this on Kind and not EK
 it would result in the Threeport API being exposed to the public internet via
 HTTP and without authentication.
 
-## Swagger Documentation
-
-Threeport API endpoints are documented with [Swagger](https://swagger.io/) at
-`$THREEPORT_API_ENDPOINT/swagger/index.html`. This is most easily
-accessed by setting `--auth-enabled=false` on a Threeport control plane
-deployed to Kind and visiting
-[http://localhost/swagger/index.html](http://localhost/swagger/index.html).

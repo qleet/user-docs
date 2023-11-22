@@ -1,6 +1,6 @@
-# Threeport User Documentation
+# Qleet User Documentation
 
-User docs for Threeport.
+User docs for Qleet hosted Threeport service.
 
 ## Local Development
 

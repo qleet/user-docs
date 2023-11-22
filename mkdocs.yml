@@ -1,21 +1,13 @@
-site_name: Threeport User Documentation
+site_name: Qleet User Documentation
 site_author: Qleet.io
 repo_url: https://github.com/qleet/user-docs
 repo_name: qleet/user-docs
 edit_uri: blob/main/docs/
 
 nav:
-  - Threeport: 'index.md'
+  - Qleet: 'index.md'
   - Guides:
-    - 'guides/getting-started.md'
-    - 'guides/remote-kubernetes-runtime.md'
-    - 'guides/aws-iam.md'
-  - Architecture:
-    - 'Overview': 'architecture/overview.md'
-    - 'Tech Stack': 'architecture/tech-stack.md'
-    - 'Threeport Controllers': 'architecture/threeport-controllers.md'
-    - 'Kubernetes Federation': 'architecture/kubernetes-federation.md'
-    - 'Software Delivery': 'architecture/software-delivery.md'
+    - 'guides/account-setup.md'
 
 theme:
   name: material

@@ -10,6 +10,7 @@ nav:
     - 'guides/getting-started.md'
     - 'guides/remote-kubernetes-runtime.md'
     - 'guides/aws-iam.md'
+    - 'guides/aws-cross-account-access.md'
   - Architecture:
     - 'Overview': 'architecture/overview.md'
     - 'Tech Stack': 'architecture/tech-stack.md'

@@ -7,7 +7,7 @@ edit_uri: blob/main/docs/
 nav:
   - Qleet: 'index.md'
   - Guides:
-    - 'guides/account-setup.md'
+    - 'guides/install.md'
 
 theme:
   name: material

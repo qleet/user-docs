@@ -4,8 +4,12 @@ Use the following instructions to install the `qleetctl` command line tool for
 using Qleet.
 
 1. Visit the [releases page](https://github.com/qleet/resources/releases) on
-   github and download the `checksums.txt` and latest pacakge for your computer's
-   architecture.
+   github and download:
+
+    1. `checksums.txt`
+
+    1. the latest pacakge for your computer's architecture
+
 1. Verify the integrity of the downloaded package.
    ```bash
    sha256sum -c --ignore-missing checksums.txt

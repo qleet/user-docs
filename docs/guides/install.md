@@ -4,7 +4,7 @@ Use the following instructions to install the `qleetctl` command line tool for
 using Qleet.
 
 1. Visit the [releases page](https://github.com/qleet/resources/releases) on
-   github and download:
+   GitHub and download:
 
     1. `checksums.txt`
 

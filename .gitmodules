@@ -1,0 +1,3 @@
+[submodule "threeport-user-docs"]
+	path = threeport-user-docs
+	url = git@github.com:threeport/user-docs.git

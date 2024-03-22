@@ -5,8 +5,12 @@ repo_name: qleet/user-docs
 edit_uri: blob/main/docs/
 nav:
   - Qleet: index.md
+  - Getting Started: getting-started.md
+  - FAQ: faq.md
   - Guides:
-      - guides/install.md
+    - Install qleetctl: guides/install-qleetctl.md
+    - Add AWS Account: guides/add-aws-account.md
+    - Add User: guides/add-user.md
   - Threeport:
       - Threeport: threeport/index.md
       - Guides:

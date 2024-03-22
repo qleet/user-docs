@@ -1,7 +1,10 @@
 # Qleet
 
-Qleet is a managed [Threeport](https://threeport.io/) service.  It provides all
-the functionality of open source Threeport plus the following:
+Welcome to Qleet, the managed [Threeport](https://threeport.io/) service
+provided by the creators of the Threeport project.
+
+Qleet provides all the functionality of open source Threeport, plus the
+following:
 
 * Managed Threeport Control Planes: Qleet users do not have to install, upgrade
   or manage Threeport control planes.  The Qleet service provides them for its

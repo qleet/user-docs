@@ -11,7 +11,7 @@ help:
 
 #deps: @ Install dependencies
 deps:
-	@pip install mkdocs mkdocs-material mkdocs-material-extensions mike  
+	@pip install mkdocs mkdocs-material mkdocs-material-extensions mike
 
 #run: @ Run mkdocs
 run:
@@ -33,3 +33,12 @@ release:
 #version: @ Print current version(tag)
 version:
 	@echo $(shell git describe --tags --abbrev=0)
+
+#build-threeport-merge: @ Build theeport-merge binary
+build-threeport-merge:
+	go build -o threeport-merge/bin/threeport-merge ./threeport-merge
+
+#threeport-merge: @ Build and run threeport-merge to update qleet user docs with threeport user docs
+threeport-merge: build-threeport-merge
+	./threeport-merge/bin/threeport-merge -config-file threeport-merge/merge-config.yaml
+

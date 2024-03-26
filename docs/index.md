@@ -1,32 +1,26 @@
 # Qleet
 
-Qleet is a managed [Threeport](https://threeport.io/) offering.
+Welcome to Qleet, the managed [Threeport](https://threeport.io/) service
+provided by the creators of the Threeport project.
 
-This site provides user documentation specific to the Qleet platform.  Since it
-provides fully managed Threeport control planes, the [Threeport
-Documentation](https://docs.threeport.io/) is still applicable and should be
-referenced for using it.
+Qleet provides all the functionality of open source Threeport, plus the
+following:
 
-### Note
+* Managed Threeport Control Planes: Qleet users do not have to install, upgrade
+  or manage Threeport control planes.  The Qleet service provides them for its
+  users.
+* Role Based Access Control (RBAC): Open source Threeport does not implement access
+  control - all users are super-users.  Qleet users can apply RBAC rules to
+  users on their account to provide appropriate access based on roles.
+* 3rd Party Identity Provider Integration (Coming Soon): Qleet currently offers
+  secure authentication to Qleet services and will soon offer integrations with
+  3rd party services to authenticate users.
+* Graphical User Interface (Coming Soon): Qleet currently offers command line
+  access to the system with the `qleetctl` CLI tool.  Soon, we will release a
+  portal so Qleet users can view and manage their resources with a GUI as well.
 
-The open source Threeport project provides the `tptctl` command line tool for
-interacting with Threeport.  Qleet uses an extension of `tptctl` called `qleetctl`
-which includes all the functionality of `tptctl` with added features specific to
-the Qleet platform.
-
-Qleet users should always use `qleetctl` instead of `tptctl`.  Any command examples
-in the Threeport docs that provide commands for `tptctl`, just substitute qleetctl
-and use the same subcommands.
-
-For example...
-
-```bash
-tptctl create workload -c my-workload.yaml`
-```
-
-simply becomes...
-
-```bash
-qleetctl create workload -c my-workload.yaml
-```
+This site provides user documentation specific to the Qleet platform.  It
+includes documentation for using the managed Threeport control planes.  If you
+are using open source Threeport, see the [Threeport
+Documentation](https://docs.threeport.io/).
 

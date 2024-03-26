@@ -8,7 +8,7 @@ command line tool.
 ## Add Account
 
 The following steps register and configure your AWS account in Qleet.  Once
-registered, you can spin up Kuberntes Runtimes and Workloads in your AWS account
+registered, you can spin up Kubernetes Runtimes and Workloads in your AWS account
 using Qleet.
 
 1. Set user environment variables by creating a file called `config-env-var`

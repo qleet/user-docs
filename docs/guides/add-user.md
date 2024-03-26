@@ -1,6 +1,6 @@
 # Add User to Qleet Account
 
-Follow these steps to add a new user to your Qleet acount.
+Follow these steps to add a new user to your Qleet account.
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ command line tool.
     Hi, please verify your account by using the following code: 894367, URL: http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171
     ```
 
-1. Add 2nd user to account.  2nd user repeats steps to register above for onboarding.
+1. Add second user to account.  Second user repeats steps to register above for onboarding.
 
     ```jsx
     qleetctl invite user --userid <userEmail>

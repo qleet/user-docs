@@ -6,7 +6,7 @@ In most cases, we don't recommend this.  It makes promoting changes through the
 tiers to production more troublesome.  Managing each tier through a single
 control plane provides a smoother experience.
 
-If your organization has different departements or lines of business that you'd
+If your organization has different departments or lines of business that you'd
 like to segregate and that don't overlap in the workloads they manage, separate
 Threeport control planes makes more sense in that case.
 

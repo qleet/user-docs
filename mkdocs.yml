@@ -1,5 +1,6 @@
 site_name: Qleet User Documentation
 site_author: Qleet.io
+site_description: Documentation for Qleet's managed Threeport service
 repo_url: https://github.com/qleet/user-docs
 repo_name: qleet/user-docs
 edit_uri: blob/main/docs/

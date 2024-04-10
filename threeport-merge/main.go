@@ -26,7 +26,7 @@ func main() {
 		}
 	}
 
-	// empty exiting Threeport content directories from Qleet docs
+	// empty existing Threeport content directories from Qleet docs
 	if err := clearContent(); err != nil {
 		fmt.Printf("Error: failed to empty existing image and markdown content: %w", err)
 	}

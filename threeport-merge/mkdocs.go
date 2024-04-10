@@ -57,6 +57,9 @@ func mergeMkdocsConfig(config *Config) error {
 	// update file paths to Threeport docs
 	updatedThreeportNav := updateDocPath(threeportMkDocs.Nav, config.Exclude)
 
+	// remove any empty sections
+	updatedThreeportNav = removeEmptyArrays(updatedThreeportNav)
+
 	// add or update the Threeport nav content to Qleet nav
 	updateThreeportNav(&qleetMkDocs.Nav, updatedThreeportNav)
 
@@ -150,4 +153,31 @@ func updateDocPath(nav []interface{}, excludePaths []string) []interface{} {
 	}
 
 	return newNav
+}
+
+// removeEmptyArrays removes any sections if all documents in that section have
+// been excluded.
+func removeEmptyArrays(data []interface{}) []interface{} {
+	result := make([]interface{}, 0)
+
+	for _, item := range data {
+		if mapItem, ok := item.(map[string]interface{}); ok {
+			newMap := make(map[interface{}]interface{})
+			for key, value := range mapItem {
+				if arrayValue, isArray := value.([]interface{}); isArray && len(arrayValue) == 0 {
+					// skip empty arrays
+					continue
+				}
+				newMap[key] = value
+			}
+			// add the map only if it's not empty
+			if len(newMap) > 0 {
+				result = append(result, newMap)
+			}
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	return result
 }

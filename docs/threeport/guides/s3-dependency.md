@@ -7,7 +7,7 @@ bucket.
 
 This guide assumes you have a remote Kubernetes runtime instance provisioned
 using the eks provider.  See [Remote Kubernetes
-Runtime](/guides/remote-kubernetes-runtime/) guide
+Runtime](../kubernetes-runtime/remote-kubernetes-runtime.md) guide
 for instructions.
 
 ## Download Configs

@@ -1,13 +1,10 @@
-# Add User to Qleet Account
+# Qleet Authentication
 
-Follow these steps to add a new user to your Qleet account.
+You can use [qleetctl](/guides/install-qleetctl) to authenticate to your [Qleet user account](/guides/qleet-user).
 
-## Prerequisites
 
-If you haven't already, [install qleetctl](/guides/install-qleetctl), the Qleet
-command line tool.
 
-## Add User
+## User Registration
 
 1. Set user password by creating a file called `/tmp/qleet-password-env`:
 
@@ -44,16 +41,13 @@ command line tool.
     qleetctl register user --account $accountName --username $email --password $password
     ```
 
+## User Verification
+You can verify a successfully registered user as follows:
+
 1. Check your email (and potentially spam folder) for an email from `haris@qleet.io` that looks like this
 
     ```bash
     Hi, please verify your account by using the following code: 894367, URL: http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171
-    ```
-
-1. Add second user to account.  Second user repeats steps to register above for onboarding.
-
-    ```jsx
-    qleetctl invite user --userid <userEmail>
     ```
 
 1. Update your environment variables with the `code` and `flow` values from the email
@@ -69,15 +63,15 @@ command line tool.
     qleetctl verify user --account $accountName --code $code --flow $flowId
     ```
 
-1. Log in to Qleet account
+1. You can alternatively use the link in the email as is via the following command:
 
     ```bash
-    qleetctl login user --account $accountName --username $email --password $password
+    qleetctl verify user --link "http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171"
     ```
 
-1. Set current control plane instance
+## User Login
+You can login to a succesfully verified account via the following command:
 
-    ```bash
-    qleetctl config current-control-plane --name=$controlPlaneName
-    ```
-
+```bash
+qleetctl login user --account $accountName --username $email --password $password
+```

@@ -4,7 +4,7 @@
 
 We are currently in private beta and are looking for potential partners to work with.
 
-Please reach out to cameron@qleet.io if you are interested in using Qleet.
+Please reach out to info@qleet.io if you are interested in using Qleet.
 
 We want to ensure that we have the ability to support your use case or otherwise see how we can we can achieve it
 

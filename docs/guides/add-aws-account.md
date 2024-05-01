@@ -21,6 +21,7 @@ using Qleet.
 
     # provided by Qleet
     export controlPlaneName=dev
+    export qleetAwsAccountId=983530947477
     ```
 
 
@@ -28,10 +29,10 @@ using Qleet.
 
     ```bash
     qleetctl config aws-account \
-        --aws-account-name default-account \
+        --aws-account-name $accountName \
         --aws-region $region \
         --aws-profile $profile \
-        --aws-account-id 983530947477 \
+        --aws-account-id $qleetAwsAccountId \
         --external-runtime-manager-role-name resource-manager-threeport-$controlPlaneName-$accountName
     ```
 

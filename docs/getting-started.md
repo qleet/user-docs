@@ -8,9 +8,9 @@ Follow these steps to get up and running with Qleet:
    how you can [invite other users](/guides/qleet-user) and also [manage RBAC](/guides/qleet-rbac).
 1. Primarily, Qleet provides to you a [managed Threeport](/guides/qleet-control-plane). Spin one up your own instance.
 1. In order to manage your workloads you'll need to ensure you have the following setup:
-1. Register and configure your AWS account in Qleet using our [Add AWS Account
-   guide](/guides/add-aws-account).
-1. Create a Kubernetes Runtime in your AWS account for your workloads by
-   following the [Remote Kubernetes Runtime
-   guide](/threeport/kubernetes-runtime/remote-kubernetes-runtime).
+    1. Register and configure your AWS account in Qleet using our [Add AWS Account
+       guide](/guides/add-aws-account).
+    1. Create a Kubernetes Runtime in your AWS account for your workloads by
+       following the [Remote Kubernetes Runtime
+       guide](/threeport/kubernetes-runtime/remote-kubernetes-runtime).
 

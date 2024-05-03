@@ -26,7 +26,7 @@ You can use [qleetctl](/guides/install-qleetctl) to authenticate to your [Qleet 
 
     # provided by Qleet
     export controlPlaneName=dev
-    export accountName=pos-tech
+    export accountName=congobooks
     ```
 
 1. Source config by running `source` on the above file
@@ -50,7 +50,13 @@ You can verify a successfully registered user as follows:
     Hi, please verify your account by using the following code: 894367, URL: http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171
     ```
 
-1. Update your environment variables with the `code` and `flow` values from the email
+1. You can alternatively use the link in the email as is via the following command:
+
+    ```bash
+    qleetctl verify user --account $accountName --link "http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171"
+    ```
+
+1. Alternatively, Update your environment variables with the `code` and `flow` values from the email
 
     ```bash
     export code=894367
@@ -61,12 +67,6 @@ You can verify a successfully registered user as follows:
 
     ```bash
     qleetctl verify user --account $accountName --code $code --flow $flowId
-    ```
-
-1. You can alternatively use the link in the email as is via the following command:
-
-    ```bash
-    qleetctl verify user --link "http://localhost:31500/kratos/self-service/verification?code=894367&flow=b7182149-5f2a-40e2-b7e9-be59ce608171"
     ```
 
 ## User Login

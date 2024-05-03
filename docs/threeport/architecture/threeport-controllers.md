@@ -1,11 +1,14 @@
 # Threeport Controllers
 
-Threeport controllers perform the state reconciliation in the
-system.  When a user deploys a workload, the change is made to the datastore
-through the Threeport RESTful API.  Once that change has been successfully
-persisted, the API notifies the appropriate controller via the message broker.
-The Threeport controller responsible for deploying the workload then executes
-the action and updates the status of the object in the API.
+Threeport controllers perform state reconciliation in the system.  When a user
+deploys a workload, a change is made to the data store through the Threeport
+RESTful API.  Once that change has been successfully persisted, the API
+notifies the appropriate controller via the notification broker.  The Threeport
+controller responsible for deploying the workload then executes the action and
+updates the status of the object in the API.
+
+The following diagram illustrates this process for the workload controller as an
+example.
 
 ![Workload Controller](../../../img/threeport/WorkloadController.png)
 
@@ -24,7 +27,7 @@ the action and updates the status of the object in the API.
    reconciliation is complete, the first change is completed and then the second
    change is executed so that race conditions don't develop.  In the event that
    a reconciliation cannot be completed, such as when a lock exists on a
-   particular object, the notification is requeued through the broker so that it
+   particular object, the notification is re-queued through the broker so that it
    is performed at a later time.
 1. Reconciliation is completed.  In this case, the workload is deployed by
    calling the Kubernetes API of the target cluster for the workload.
@@ -43,9 +46,9 @@ Workload controller has a distinct reconciler for each object.
 
 ![Workload Controller Reconcilers](../../../img/threeport/ThreeportReconcilers.png)
 
-Note: this illustration does not include an exhaustive list of reconcilers in
-the Workload Controller.  It is just a representation of the components involved
-in the example from above.
+> Note: this illustration does not include an exhaustive list of reconcilers in
+> the Workload Controller.  It is just a representation of the components involved
+> in the example from above.
 
 The blue arrows illustrate the notifications that are sent to the reconcilers
 when a change occurs in the system.
@@ -53,7 +56,7 @@ when a change occurs in the system.
 The orange arrows represent the communication from the reconcilers to the
 message broker.  They first check to see if a lock exists on a particular object
 before reconciling.  If no lock is found, they place a lock and reconcile.  If a
-lock is found, they requeue the notification - usually after some short period -
+lock is found, they re-queue the notification - usually after some short period -
 so that reconciliation can occur at a later time if needed.  Once reconciliation
 is complete, the lock is released.
 
@@ -61,7 +64,7 @@ The green arrows show the calls from the reconcilers to the Kubernetes API in
 the Compute Space.  The Kubernetes API provides the primary interface point for
 the reconcilers to the compute space.  No calls are made into processes or
 workloads in those clusters as a rule.  Any custom operations that are not
-satisfied by Kubernetes are achieved with custom Kubernetes Operators that can
+satisfied by Kubernetes are achieved with custom Kubernetes operators that can
 be configured and triggered through the Kubernetes API.
 
 The purple arrows show the calls back to the API to update other related objects

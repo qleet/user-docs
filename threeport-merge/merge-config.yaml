@@ -1,7 +1,8 @@
 exclude:
-  - docs/threeport/guides/getting-started.md
-  - docs/threeport/guides/install-tptctl.md
-  - docs/threeport/guides/install-threeport-local.md
-  - docs/threeport/guides/install-threeport-aws.md
-  - docs/threeport/guides/deploy-workload-local.md
+  - docs/threeport/getting-started.md
+  - docs/threeport/install/install-tptctl.md
+  - docs/threeport/install/install-threeport-local.md
+  - docs/threeport/install/install-threeport-aws.md
+  - docs/threeport/deploy/deploy-workload-local.md
+  - docs/threeport/managed-threeport.md
 

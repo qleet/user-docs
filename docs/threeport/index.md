@@ -1,199 +1,130 @@
 # Threeport
 
-Threeport is an application orchestrator and software delivery control plane.
-It allows a user to define a workload and declare its dependencies,
-orchestrating the delivery of the workload with all of those dependencies
-connected and available.
+Threeport is an Application Orchestrator.
 
-As an alternative to continuous delivery pipelines that use git as the source
-of truth, Threeport stores state in a database instead of git. It leverages
-software controllers that access the database and reconcile the desired state
-to gracefully manage delivery, eliminating the need for sprawling DevOps tools
-and configuration languages.
+App Orchestration is the next evolution for software delivery.  For years we have used
+continuous delivery pipelines and GitOps as methods for delivering software.  As
+cloud native has become more ubiquitous, these methods have become increasingly
+insufficient.
 
-Furthermore, Threeport provides a unified, global control plane for workloads.
-It functions as an orchestration system that manages cloud provider
-infrastructure and the software utilizing it across any region, all through a
-single, scalable control plane.
+Threeport offers a self-service experience to developers.
+DevOps and platform engineering teams can streamline and facilitate
+the delivery efforts of developers without being on the day-to-day critical
+delivery path.  If deemed necessary, software delivery into critical
+production environments _can_ be delegated to an operations team.  Threeport
+enables smooth software delivery whatever your organization's policies may be.
 
-Threeport treats the following concerns as application dependencies:
+Fundamentally, Threeport exists to reduce engineering toil, increase resource
+consumption efficiency, and make the most complex software systems manageable by
+relatively small teams.  This leads to the delivery of more feature rich and
+more reliable software with lower infrastructure and engineering costs.
 
-* infrastructure
-* container orchestration
-* installed supporting services
-* infra provider managed services
+Better software.  Lower costs.
 
-The Threeport control plane shown below consists of a RESTful API and a
-collection of controllers that reconcile the state provided by users.  The
-controllers perform reconciliation by interfacing with infrastructure service
-provider APIs and the Kubernetes API.
+## Threeport for Developers
 
-![Threeport Stack](img/ThreeportStack.png)
+Threeport allows developers to deliver the apps they build to cloud native
+environments.
 
-## What Threeport Is Not
+![Threeport for Devs](../../img/threeport/ThreeportForDevs.png)
 
-### Threeport is not a Kubernetes Distribution
+Following is a common scenario for a developer workflow using Threeport:
 
-Kubernetes distributions provide installation of Kubernetes clusters along with
-supporting services, or cluster addons.  They provide a way to install
-Kubernetes clusters that are ready to accept workloads.  The workflow is
-generally as follows:
+0. Developer pushes code to GitHub.
+0. The CI actions run (GitHub actions in this case) and produce a container image that is
+   pushed to a registry such as Docker Hub or GitHub Container Registry.
+0. The developer uses `qleetctl` to deploy their workload.  This makes a call to
+   the Threeport API and triggers the control plane to deploy the app.
+   Threeport will call the Kubernetes API to deploy the Kubernetes resources.
+   If requested, Threeport can deploy AWS managed service dependencies as well
+   as other support services to configure ingress routing from the internet,
+   provision SSL certs, set DNS records, etc.
+0. The image is pulled by the Kubernetes control plane.
+0. The app runs in containers on the Kubernetes cluster.  This example shows
+   the app running in the same Kubernetes environment as the Threeport Control
+   Plane, but this is optional.  Threeport can deploy separate Kubernetes
+   runtime environments as needed, and manage deployments to any cluster managed
+   by Threeport.
 
-1. Platform engineers use the Kubernetes distro to install clusters and prepare
-   them for use.
-2. DevOps sets up CI/CD or GitOps pipelines to deploy into those clusters.
-3. Developers push changes to config repos that trigger delivery of workloads to
-   the clusters.
+## Threeport for DevOps
 
-Threeport performs cluster install and preparation in response to application
-deployments as needed.  The workflow is as follows:
+DevOps can streamline developer usage by creating definitions for the resources
+developers need to deliver.  Most Threeport objects have two components: a
+definition and instance.  The definition provides the configuration.  The
+instance uses a small number of runtime parameters and references the definition
+to spin up the resources required.  Learn more about definitions and instances
+in the [Concepts section](concepts/definitions-instances.md).
 
-1. Operations installs the Threeport control plane.
-2. Operations creates dependency profiles that are not satisfied by the existing
-   system defaults.  This could include profiles for clusters, managed services
-   or installed supporting services.
-3. Developers provide workload configs with dependency declarations to
-   Threeport.  Threeport orchestrates the deployment of the application and its
-   dependencies.
+![Threeport for DevOps](../../img/threeport/ThreeportForDevOps.png)
 
-### Threeport is not a Continuous Integration System
+DevOps supports developers as follows:
 
-Traditional CI includes automated testing and build processes for software.  The
-existing tools and systems used by developers today for this are perfectly
-adequate.  Threeport requires no change to these developer workflows.
+0. DevOps creates the definition configurations that can be referenced later by
+   developers.  Any number of definitions can be made available for different
+   needs for each resource type.
+0. The developer creates instances from these definitions to create a new
+   Kubernetes runtime, if needed, service dependencies like network gateways,
+   managed dependencies like RDS databases, as well as the workload itself.  The
+   developer doesn't have to worry about any resource configuration since DevOps
+   took care of this.  They only provide runtime parameters such as which
+   Kubernetes runtime to use for their workload.
+0. Threeport deploys a kubernetes runtime and any dependencies that may be
+   needed. These dependencies can include kubernetes manifests, gateway
+   resources such as load balancers, and managed AWS services such as RDS.  All
+   dependencies are connected and the workload is immediately available to the
+   end user as soon as resources are up. An example configuration can be found
+   on the Threeport GitHub repository
+   [here](https://github.com/threeport/threeport/blob/main/samples/wordpress-workload-remote.yaml).
 
-In order to integrate Threeport, simply add a call to the Threeport control
-plane to notify it of a new build of a container image at the end of your CI
-process.  Threeport will perform the delivery of the new version into the
-appropriate environment/s.
+## Threeport for Platform Engineers
 
-## Comparable Projects
+Platform engineering can extend Threeport using the [Threeport
+SDK](sdk/sdk-intro.md).  When an
+organization has a high-value, complex workload, this approach is highly
+recommended.  It provides maximum programmatic control of app delivery resulting
+in greater capabilities, reliability and cost efficiency.  It also requires a
+greater up-front engineering investment from the platform engineering team which
+is why using this approach is optimal for sophisticated, revenue generating
+applications.
 
-Following is a comparison between Threeport and some other open source projects
-to help illustrate where Threeport fits in.
+![Threeport for Platform Engineers](../../img/threeport/ThreeportForPlatformEngineers.png)
 
-### Radius
+The process for optimizing application delivery with platform engineering looks
+something like this:
 
-[Radius](https://radapp.io/) helps teams manage cloud native application
-dependencies.
+0. A platform engineering team uses the Threeport SDK to build an extension to the
+   Threeport control plane.  The code for this extension lives in its own
+   git repo.  Experienced Go programmers with a sound understanding of
+   Kubernetes and Threeport can usually produce a POC within a couple of weeks,
+   even faster for simpler use cases.
+0. The primary asset produced from the project's CI pipeline is a container
+   image for the Threeport controller that understands the needs of the custom
+   workload.
+0. The custom controller is deployed with the rest of the Threeport control
+   plane.  Threeport is now extended to include intelligent management of
+   instances of the custom workload.
+0. The developers now use a custom object that requires much less configuration
+   as the details of implementation are built into the custom Threeport
+   controller.
+0. When the custom workload is created, Threeport deploys all the components of
+   the application, stitching all the components together to produce a running,
+   available application as soon as all resources are provisioned.  In the above
+   example a front-end component is deployed with TLS termination and network
+   ingress from the public internet plumbed through an AWS load balancer.  The
+   back end workload is deployed and connected to a new AWS RDS database that is
+   also spun up by Threeport.  A batch workload is deployed with a new S3 bucket
+   for assets to be processed.  DNS records are created in a Route53 hosted zone
+   to provide a domain name for connection to the load balancer's IP.
 
-Similarities:
+## Next Steps
 
-* Both Threeport and Radius have a strong emphasis on providing developer
-  abstractions that allow workloads to be deployed _with_ their dependencies,
-  such as managed services like AWS RDS and S3.  Radius' workload and dependency
-  management capabilities are more mature than in Threeport.
-* Both Threeport and Radius are fundamentally multi-cloud systems.  Threeport
-  only supports AWS today - but it is designed to have other cloud provider
-  support plugged in.  Radius offers support for AWS and Azure today.
-* Both Threeport and Radius aim to provide a platform for collaboration between
-  developers and other IT operators.  Developers need ways to smoothly leverage
-  the expertise offered by other teams with minimal friction.
+Check out the [Getting Started guide](getting-started.md) to try out Threeport
+for yourself.
 
-Differences:
+See our [Application Orchestration
+document](concepts/application-orchestration.md) in our Concepts section for more
+information on how Threeport approaches software delivery.
 
-* Radius is an extension of the Kubernetes control plane.  The Threeport control
-  plane is a distinct control plane with its own APIs.  The Threeport control
-  plane supports greater scalability and geo-redundancy than Kubernetes so as to
-  serve as a global control plane for all clusters under management.
-* Radius does not manage Kubernetes clusters.  To get started with Radius, you
-  must have a Kubernetes cluster.  In contrast, Threeport manages Kubernetes
-  clusters as runtime dependencies.
-* Threeport manages support services that must be installed on Kubernetes as
-  application dependencies.  Examples include network ingress routing, TLS
-  termination and DNS management.  These common support services are installed
-  and configured for tenant applications by Threeport.  With Radius, these
-  services can be installed but aren't managed as dependencies, per se.
-
-Radius and Threeport have very complimentary characteristics and could be
-combined well.
-
-### Crossplane
-
-[Crossplane](https://www.crossplane.io/) provides a framework for building
-customizations to the Kubernetes control plane.
-
-Similarities:
-
-* Both Threeport and Crossplane facilitate building custom application
-  platforms.
-* Threeport manages workload dependencies, such as managed services, as a
-  primary function.  Similar functionality can be built out with Crossplane.
-
-Differences:
-
-* Crossplane aims to build custom Kubernetes control planes without needing to
-  write code.  This is achieved with compositions that define new APIs with YAML.
-  In contrast, platform engineers extend Threeport by writing code.  We believe
-  that languages like Go are a better choice for implementing sophisticated
-  software systems.  As such, we are working on an SDK that allows users to
-  build their custom implementations with Go, rather than with compositions
-  defined in YAML.
-* Crossplane is an extension of the Kubernetes control plane.  The Threeport control
-  plane is a distinct control plane with its own APIs.  The Threeport control
-  plane supports greater scalability and geo-redundancy than Kubernetes so as to
-  serve as a global control plane for all clusters under management.
-
-Crossplane and Threeport could be used in conjunction by using Threeport to
-provision and manage Kubernetes with Crossplane extensions.  However, there are a
-lot of overlapping concerns between projects.  Building an application platform
-using both projects would introduce more complexity and unclear boundaries.
-
-### ArgoCD
-
-[Argo CD](https://argoproj.github.io/cd/) is a modern Kubernetes-native
-continuous delivery system.
-
-Similarities:
-
-* Both ArgoCD and Threeport manage software delivery.
-
-Differences:
-
-* ArgoCD supports various DevOps tools to be used in workflows to execute the
-  steps needed to deliver software.  Threeport instead uses software
-  controllers to manage software delivery.  With ArgoCD you can get a delivery
-  pipeline up and running pretty quickly.  The challenge is maintainability when
-  complexity increases.  When using Helm charts with Kustomize overlays for
-  sophisticated distributed applications, the complexity overhead can become
-  quite a burden.  Threeport advocates using code in a software controller
-  instead of config languages in a pipeline.  This means more work up-front and
-  changes to the delivery system are a bit more involved.  However, this
-  approach improves the maintainability of complex delivery systems.
-* ArgoCD generally pulls configuration from Git repos and applies them to
-  Kubernetes clusters.  Threeport uses a relational database to store config
-  which provides more efficient access to software controllers that need to both
-  read and write configuration details.
-
-ArgoCD and Threeport could be used in conjunction by using Threeport to
-provision and manage Kubernetes clusters with ArgoCD.  However, similar to
-Crossplane, there are a lot of overlapping concerns between the projects.  Using
-Crossplane and ArgoCD together make far more sense than using Threeport with
-either Crossplane or ArgoCD.
-
-## Summary
-
-Fundamentally, Threeport exists to reduce engineering toil and increase resource
-consumption efficiency in delivering software to its users.  This leads to
-greater development velocity as well as lowered engineering and infrastructure
-costs.
-
-It is designed and built upon the following principles:
-
-* General purpose programming languages like Go are superior to DSLs and
-  templates for defining the behavior of complex systems.  Threeport makes it as
-  easy as possible to extend it with custom controllers.
-* Use progressive disclosure in the abstractions available to users.  Dead
-  simple use cases should be trivial to configure and execute.  However, complex
-  use cases should be supported by allowing users greater level of
-  configurability in the underlying systems when needed.
-* Git repos are not great for storing the configuration of complex systems.  For
-  a system that is driven by software controllers, a database is more efficient
-  for both reads and writes by those controllers.
-
-If you'd like to try it out, visit our [getting started
-guide](guides/getting-started/).
-
-If you'd like to learn about the architecture, check out our [architecture
-overview](architecture/overview/).
+To dive into the architecture of Threeport, see the [Architecture Overview
+document](architecture/overview.md)
 

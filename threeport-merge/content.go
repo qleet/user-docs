@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -68,8 +69,8 @@ func copyFile(src, dst string) error {
 	for scanner.Scan() {
 		// replace 'tptctl' with 'qleetctl'
 		line := strings.Replace(scanner.Text(), TptctlStr, QleetctlStr, -1)
-		// update image path
-		line = strings.Replace(line, ThreeportImgPathPrefix, QleetImgPathPrefix, -1)
+		// update paths to images in documents
+		line = processMarkdownImageLinks(line)
 		_, err := writer.WriteString(line + "\n")
 		if err != nil {
 			return err
@@ -184,4 +185,34 @@ func copyImgDir(src, dst string) error {
 		}
 	}
 	return nil
+}
+
+// processMarkdownImageLinks updates the image links to point to the new
+// location in Qleet docs.
+func processMarkdownImageLinks(input string) string {
+	// regex pattern to match image links in markdown
+	regexPattern := `\!\[(.*?)\]\((.*?)\)`
+	regex := regexp.MustCompile(regexPattern)
+
+	// find all matches of image links
+	matches := regex.FindAllStringSubmatch(input, -1)
+
+	// iterate through matches and process them
+	for _, match := range matches {
+		altText := match[1]
+		path := match[2]
+
+		// filter out image links to external pages starting with https
+		if !strings.HasPrefix(path, "https") {
+			// modify the path to the location in Qleet docs
+			modifiedPath := strings.Replace(path, "img/", "img/threeport/", 1)
+			modifiedPath = "../../" + modifiedPath
+
+			// construct and replace the modified image link
+			modifiedLink := fmt.Sprintf("![%s](%s)", altText, modifiedPath)
+			input = strings.Replace(input, match[0], modifiedLink, 1)
+		}
+	}
+
+	return input
 }

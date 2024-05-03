@@ -8,24 +8,53 @@ nav:
   - Getting Started: getting-started.md
   - FAQ: faq.md
   - Guides:
-    - Install qleetctl: guides/install-qleetctl.md
-    - Add AWS Account: guides/add-aws-account.md
-    - Add User: guides/add-user.md
+      - Install qleetctl: guides/install-qleetctl.md
+      - Add AWS Account: guides/add-aws-account.md
+      - Add User: guides/add-user.md
   - Threeport:
       - Threeport: threeport/index.md
-      - Guides:
-          - threeport/guides/remote-kubernetes-runtime.md
-          - threeport/guides/deploy-workload-aws.md
-          - threeport/guides/aws-iam.md
-          - threeport/guides/aws-cross-account-access.md
-          - threeport/guides/namespaces.md
+      - FAQ: threeport/faq.md
+      - Concepts:
+          - Application Orchestration: threeport/concepts/application-orchestration.md
+          - Orchestration Abstractions: threeport/concepts/orchestration-abstractions.md
+          - Comparisons: threeport/concepts/comparisons.md
+          - Definitions & Instances: threeport/concepts/definitions-instances.md
+          - Extensions: threeport/concepts/extensions.md
+      - Threeport Objects:
+          - Kubernetes Runtimes:
+              - Introduction: threeport/kubernetes-runtime/kubernetes-intro.md
+              - Remote Kubernetes Runtime: threeport/kubernetes-runtime/remote-kubernetes-runtime.md
+          - Workloads:
+              - Introduction: threeport/workloads/workload-intro.md
+              - Local Workload: threeport/workloads/deploy-workload-local.md
+              - Remote Workload: threeport/workloads/deploy-workload-aws.md
+              - Namespace Management: threeport/workloads/namespaces.md
+          - Helm Workloads:
+              - Introduction: threeport/helm-workloads/helm-intro.md
+              - Local Helm Workload: threeport/helm-workloads/deploy-helm-local.md
+          - AWS:
+              - Introduction: threeport/aws/aws-intro.md
+              - IAM Permissions: threeport/aws/aws-iam.md
+              - Cross Account Access: threeport/aws/aws-cross-account-access.md
+          - Terraform:
+              - Introduction: threeport/terraform/terraform-intro.md
+              - AWS RDS Database: threeport/terraform/rds-database.md
+          - Gateways:
+              - Introduction: threeport/gateways/gateway-intro.md
+          - Secrets:
+              - Introduction: threeport/secrets/secrets-intro.md
+          - Observability:
+              - Introduction: threeport/observability/observability-intro.md
+              - Local Observability: threeport/observability/deploy-observability-local.md
+          - Control Planes:
+              - Introduction: threeport/control-planes/control-plane-intro.md
+      - SDK:
+          - Introduction: threeport/sdk/sdk-intro.md
       - Architecture:
           - Overview: threeport/architecture/overview.md
-          - Tech Stack: threeport/architecture/tech-stack.md
+          - Control Plane: threeport/architecture/control-plane.md
           - Threeport Controllers: threeport/architecture/threeport-controllers.md
           - Kubernetes Federation: threeport/architecture/kubernetes-federation.md
-          - Software Delivery: threeport/architecture/software-delivery.md
-          - Orchestration Abstractions: threeport/architecture/orchestration-abstractions.md
 theme:
   favicon: img/favicon.ico
   features:

@@ -22,37 +22,7 @@ mkdir threeport-runtime-test
 cd threeport-runtime-test
 ```
 
-To get started, a valid `AwsAccount` object must be created. Here is an example of what this config looks like:
-
-```yaml
-AwsAccount:
-  Name: default-account
-  AccountID: "555555555555"
-  DefaultAccount: true
-
-  # option 1: provide explicit configs/credentials
-  #DefaultRegion: some-region
-  #AccessKeyID: "ASDF"
-  #SecretAccessKey: "asdf"
-
-  # option 2: use local AWS configs/credentials
-  LocalConfig: /path/to/local/.aws/config
-  LocalCredentials: /path/to/local/.aws/credentials
-  LocalProfile: default
-```
-
-Paste the following command to download `aws-account.yaml`. Open the file and update `AccountID`,
-`LocalConfig`, and `LocalCredentials` to the appropriate values for your environment.
-
-```bash
-curl -O https://raw.githubusercontent.com/threeport/releases/main/samples/aws-account.yaml
-```
-
-Once `aws-account.yaml` is prepared, run the following command to create the `AwsAccount`
-object in the Threeport API:
-```bash
-qleetctl create aws-account --config aws-account.yaml
-```
+To get started, a valid `AwsAccount` object must be created. Use the [Basic AWS Setup guide](../aws/basic-aws-setup.md) for instructions.
 
 ## Deployment
 

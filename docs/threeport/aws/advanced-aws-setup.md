@@ -1,7 +1,8 @@
-# AWS Cross-Account Access
+# Advanced AWS Setup
 
-Threeport control-planes can be configured to manage resources in a separate AWS account.
+Use this documentation to configure Threeport to manage resources in an AWS account that is separate from the account Threeport is deployed in.
 
+If using the same AWS account for Threeport and the workloads it will manage, follow the directions in the [Basic AWS Setup guide](../aws/basic-aws-setup.md)
 ## Prerequisites
 
 - An instance of the Threeport API: Follow the [getting started

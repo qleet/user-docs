@@ -13,4 +13,3 @@ Follow these steps to get up and running with Qleet:
     1. Create a Kubernetes Runtime in your AWS account for your workloads by
        following the [Remote Kubernetes Runtime
        guide](/threeport/kubernetes-runtime/remote-kubernetes-runtime).
-

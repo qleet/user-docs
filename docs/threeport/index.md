@@ -2,6 +2,9 @@
 
 Threeport is an Application Orchestrator.
 
+If you'd prefer to try out Threeport rather than read about it, jump over to our
+[Getting Started guide](./getting-started.md).
+
 App Orchestration is the next evolution for software delivery.  For years we have used
 continuous delivery pipelines and GitOps as methods for delivering software.  As
 cloud native has become more ubiquitous, these methods have become increasingly

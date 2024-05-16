@@ -7,32 +7,10 @@ command line tool.
 
 ## Add Account
 
-The following steps register and configure your AWS account in Qleet.  Once
-registered, you can spin up Kubernetes Runtimes and Workloads in your AWS account
-using Qleet.
+In order to allow Cross-Account access for Qleet to your AWS Account. You will need the Qleet Account ID which can be exported before any relevant commands via:
 
-1. Set user environment variables by creating a file called `config-env-var`
+```bash
+export qleetAwsAccountId=983530947477
+```
 
-    ```bash
-    export region=<region>          # your default AWS region
-    export email=<email>            # your user email
-    export profile=<profile>        # your AWS profile name
-    export accountName=<account>    # your Qleet account name
-
-    # provided by Qleet
-    export controlPlaneName=dev
-    export qleetAwsAccountId=983530947477
-    ```
-
-
-1. Register your account and configure AWS:
-
-    ```bash
-    qleetctl config aws-account \
-        --aws-account-name $accountName \
-        --aws-region $region \
-        --aws-profile $profile \
-        --aws-account-id $qleetAwsAccountId \
-        --external-runtime-manager-role-name resource-manager-threeport-$controlPlaneName-$accountName
-    ```
-
+You will need this account for specifying the --aws-account-id parameter where required using the [Advanced AWS Setup Guide](../threeport/aws/advanced-aws-setup.md).

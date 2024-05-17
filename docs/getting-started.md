@@ -2,14 +2,21 @@
 
 Follow these steps to get up and running with Qleet:
 
-1. First, [install qleetctl](/guides/install-qleetctl), the Qleet command line tool.
-1. Next, [create a new account](/guides/qleet-account) with Qleet.
-1. You should then [verify and login](/guides/qleet-authentication) your user to your Qleet account. Also take the time to familiarize yourself on 
-   how you can [invite other users](/guides/qleet-user) and also [manage RBAC](/guides/qleet-rbac).
-1. Primarily, Qleet provides to you a [managed Threeport](/guides/qleet-control-plane). Spin one up your own instance.
-1. In order to manage your workloads you'll need to ensure you have the following setup:
-    1. Register and configure your AWS account in Qleet using our [Add AWS Account
-       guide](/guides/add-aws-account).
-    1. Create a Kubernetes Runtime in your AWS account for your workloads by
-       following the [Remote Kubernetes Runtime
-       guide](/threeport/kubernetes-runtime/remote-kubernetes-runtime).
+1. [Install qleetctl](/guides/install-qleetctl), the Qleet command line tool.
+1. [Create a new account](/guides/qleet-account) for your company with Qleet.
+1. [Verify and log in](/guides/qleet-authentication) to your Qleet user account.
+
+       a. Optional: [Invite other users](/guides/qleet-user) to use your company's
+          Qleet account.
+
+       b. Optional: [Manage the role-based-access-controls](/guides/qleet-rbac)
+          for other non-admin users on your company's Qleet account.
+
+1. [Create a new Threeport control plane](/guides/qleet-control-plane).
+1. [Connect your AWS account](/guides/add-aws-account) to your Threeport control
+   plane.
+1. [Create a Kubernetes Runtime](/threeport/kubernetes-runtime/remote-kubernetes-runtime)
+   in your AWS account to host your workloads.
+1. [Deploy a sample WordPress
+   workload](/threeport/workloads/deploy-workload-aws) to see how the system works.
+

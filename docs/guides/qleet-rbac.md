@@ -1,20 +1,21 @@
 # Qleet RBAC
 
-You can manage user RBAC via [qleetctl](/guides/qleet-rbac)
+You can manage user RBAC via [qleetctl](install-qleetctl.md).
 
 ## Roles and Policies
 
-You can assign user id's to RBAC Roles within Qleet.
+You can assign user emails to RBAC Roles within Qleet.
 
-These Roles can then be assigned to access policies to give you a fine grained control over what a user can do within the confines of the system.
+These Roles can then be assigned to access policies to give you fine grained
+control over what a user can do within the system.
 
-1. To view all current Roles within your qleet account, you can use the following command:
+1. To view all current Roles within your qleet account, you can use the following command.
 
     ```bash
     qleetctl get roles
     ```
 
-    For a newly created account, you should see something akin to the following:
+    For a newly created account, you should see something like this.
 
     ```
     NAME                MEMBERS
@@ -22,25 +23,32 @@ These Roles can then be assigned to access policies to give you a fine grained c
     account-viewer      []
     ```
 
-    Please note that the roles admin and account-viewer are default roles for Qleet. While you can make changes to the members you cannot delete them entirely.
+    Please note that `admin` and `account-viewer` are default roles for Qleet.
+    While you can make changes to the members you cannot delete these roles
+    entirely.
 
-1. Now say you have a use case within your organization where you need a permissions group that can only view the user-invitations within the system
+1. Now say you have a use case within your organization where you need a
+permissions group that can only view the user-invitations within the system
 
-    You can call this role a user-invitation-viewer and can make it via the following command:
+    You can call this role `user-invitation-viewer` and can create it via the
+    following command.  With this command we're also assigning the user with
+    email `alice@congobooks.com` to that role.
 
     ```bash
     qleetctl create role -n user-invitation-viewer -u alice@congobooks.com
     ```
 
-1. Now that we have a role that is designated for users to view the user-invitations within the system.
-It is important to ensure that it is configured with the correct policy.
+1. Now that we have a role that is designated for users to view the user-invitations
+within the system, it is important to ensure that it is configured with the correct policy.
 
-    You can view all current policies within the system via:
+    You can view all current policies within the system as follows.
+
     ```bash
     qleetctl get policies
     ```
 
-    You should see something that resembles the below:
+    You should see something that resembles this.
+
     ```bash
     NAME                                 API_VERSION     HTTP_VERB     MEMBERS                     CONTROLPLANE
     accounts                             v0              PATCH         [admin]                     
@@ -59,16 +67,29 @@ It is important to ensure that it is configured with the correct policy.
     user-invitations                     v0              PATCH         [admin]          
     ```
 
-    Policies unlike Roles cannot be created by the user via qleetctl, these are instead managed by the system itself.
+    Unlike Roles, Policies cannot be created by the user via qleetctl,these are
+    instead managed by the system itself.
 
-    In the above example, we can see that the role group admin has access to all API Objects for different HTTP verbs and API versions.
+    In the above example, we can see that the `admin` role is a member of each
+    policy which gives that role access to all API Objects for each HTTP
+    verb and API version.
 
-    We are interested in adding our newly created user-invitation-viewer role to the user-invitations policy that is specific to version v0 and HTTP verb GET.
+    For this guide we will add our newly created user-invitation-viewer role
+    to the user-invitations policy that is specific to version `v0` and HTTP verb
+    `GET`.
 
-    So we can run the following command to attach the role to our desired policy:
+    The following command will attach the `user-invitation-viewer` role to the
+    `user-invitations` policy.
 
     ```bash
     qleetctl update policy -a v0 -v GET -n user-invitations -r user-invitation-viewer
     ```
 
-    Now all users as part of this Role group will be authorized to access the v0 user-invitations GET endpoint.
+    Now, all users assigned to the `user-invitation-viewer` role will be
+    authorized to access the v0 user-invitations API endpoint with GET requests.
+
+## Next Steps
+
+Now that you have your users' access control set up, you can create a Threeport
+control plane using our [Control Plane guide](qleet-control-plane.md).
+

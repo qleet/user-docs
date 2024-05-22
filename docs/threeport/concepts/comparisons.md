@@ -3,7 +3,6 @@
 Following are some comparisons between Threeport and other projects and
 products.
 
-
 ## Kubernetes Distributions
 
 There are many vendors that provide installation of Kubernetes with various
@@ -103,18 +102,21 @@ Similarities:
 
 Differences:
 
-* Radius is an extension of the Kubernetes control plane.  The Threeport control
-  plane is a distinct control plane with its own APIs.  The Threeport control
-  plane supports greater scalability and geo-redundancy than Kubernetes so as to
-  serve as a global control plane for all clusters under management.
 * Radius does not manage Kubernetes clusters.  To get started with Radius, you
   must have a Kubernetes cluster.  In contrast, Threeport manages Kubernetes
   clusters as runtime dependencies.
 * Threeport manages support services that must be installed on Kubernetes as
   application dependencies.  Examples include network ingress routing, TLS
   termination and DNS management.  These common support services are installed
-  and configured for tenant applications by Threeport.  With Radius, these
-  services can be installed but aren't managed as dependencies, per se.
+  and configured for tenant applications by Threeport.  With Radius, support
+  services can be installed, but configuration of them is up to the user to
+  manage.
+* Radius has a strong emphaisis on leveraging existing tools like Bicep, Helm
+  and Terraform and unifying them in a common platform.  Threeport supports Helm
+  and Terraform, but encourages migrating towards the use of programming
+  languages like Go to manage resource configuration.  The Threeport SDK (coming
+  soon) allows a smooth transition from DevOps tools to controllers for
+  accomplishing this.
 
 Radius and Threeport have very complimentary characteristics and could be
 combined well.

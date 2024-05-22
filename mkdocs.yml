@@ -8,9 +8,13 @@ nav:
   - Getting Started: getting-started.md
   - FAQ: faq.md
   - Guides:
-      - Install qleetctl: guides/install-qleetctl.md
-      - Add AWS Account: guides/add-aws-account.md
-      - Add User: guides/add-user.md
+    - Install qleetctl: guides/install-qleetctl.md
+    - Qleet Account: guides/qleet-account.md
+    - Qleet Authentication: guides/qleet-authentication.md
+    - Qleet User: guides/qleet-user.md
+    - Qleet RBAC: guides/qleet-rbac.md
+    - Control Plane: guides/qleet-control-plane.md
+    - Add AWS Account: guides/add-aws-account.md
   - Threeport:
       - Threeport: threeport/index.md
       - FAQ: threeport/faq.md
@@ -35,7 +39,8 @@ nav:
           - AWS:
               - Introduction: threeport/aws/aws-intro.md
               - IAM Permissions: threeport/aws/aws-iam.md
-              - Cross Account Access: threeport/aws/aws-cross-account-access.md
+              - Basic AWS Setup: threeport/aws/basic-aws-setup.md
+              - Advanced AWS Setup: threeport/aws/advanced-aws-setup.md
           - Terraform:
               - Introduction: threeport/terraform/terraform-intro.md
               - AWS RDS Database: threeport/terraform/rds-database.md
